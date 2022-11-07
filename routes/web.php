@@ -22,13 +22,32 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('/invitation', '\App\Http\Controllers\InviteController')->only(['index', 'create', 'store','will']);
     Route::resource('/tipo-participacion', '\App\Http\Controllers\ParticipacionController');
 
-    Route::any('/board',[\App\Http\Controllers\InviteController::class,'IncrementWhenCodeIsUsed'])
+
+/*    Route::any('/board',[\App\Http\Controllers\InviteController::class,'IncrementWhenCodeIsUsed'])
         ->name('board')
-        ->middleware('protected_by_invite_codes');
+        ->middleware('protected_by_invite_codes');*/
 });
 
+/**
+ * Routes to create and join to a meet being a host
+ */
+Route::post('meet/store', [\App\Http\Controllers\MeetController::class, 'storeAsHost'])
+    ->name('meet.storeAsHost');
+Route::any('/board', [\App\Http\Controllers\MeetController::class,'joinToMeet'])
+    ->name('board');
 
+/**
+ * Routes to join to meet as guest
+ */
+Route::post('meet/join',[\App\Http\Controllers\MeetController::class, 'storeAsGuest'])
+    ->name('meet.storeAsGuest');
+
+
+/**
+ * Main route after logged to create a meeting
+ */
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Auth::routes();
 \Illuminate\Support\Facades\Broadcast::routes();

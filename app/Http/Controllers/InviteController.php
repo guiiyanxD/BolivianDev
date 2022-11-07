@@ -14,55 +14,52 @@ use function Sodium\increment;
 
 class InviteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return Response
+     * @params $max $fecha
+     * @returns InviteCodes $code
      */
-    public function store(Request $request)
+    public function store( $max = null, $fecha = null )
     {
-        if ($request->max == null && $request->fecha == null ){ //no tiene limites
-            $invite_code =  \Junges\InviteCodes\Facades\InviteCodes::create()
+        ///TODO:Verify if date is heigher or equal than now
+        //$fecha = $fecha != null ? $this->verifyingDate($fecha) : null;
+
+
+        //no tiene limites
+        if ($max == null && $fecha == null )
+        {
+            $code = \Junges\InviteCodes\Facades\InviteCodes::create()
                 ->save();
-        }else if($request->max != null && $request->fecha == null){ //tiene limite y no tiene expiracion
-            $invite_code = \Junges\InviteCodes\Facades\InviteCodes::create()
-                ->maxUsages($request->max)
+
+        //tiene limite y no tiene expiracion
+        }
+        else if($max != null && $fecha == null)
+        {
+            $code = \Junges\InviteCodes\Facades\InviteCodes::create()
+                ->maxUsages($max)
                 ->save();
-        }else if($request->max == null && $request->fecha != null){ //ilimitado y tiene expiracion
-            $invite_code = \Junges\InviteCodes\Facades\InviteCodes::create()
-                ->expiresAt($request->fecha)
+
+        //ilimitado y tiene expiracion
+        }
+        else if($max == null && $fecha != null)
+        {
+            $code = \Junges\InviteCodes\Facades\InviteCodes::create()
+                ->expiresAt($fecha)
                 ->save();
-        }else{
-            $invite_code = \Junges\InviteCodes\Facades\InviteCodes::create()
-                ->maxUsages($request->max)
-                ->expiresAt($request->fecha)
+
+        }
+        else
+        {
+            $code = \Junges\InviteCodes\Facades\InviteCodes::create()
+                ->maxUsages($max)
+                ->expiresAt($fecha)
                 ->save();
         }
-        //return dd(Auth::user()->getAuthIdentifier());
-        event(new NewMeetingAccess(Auth::user(),1,$invite_code->id));
 
-        return redirect()->route('board',['invite_code'=>$invite_code]);
+        return $code;
     }
 
     /**
@@ -71,7 +68,8 @@ class InviteController extends Controller
      */
     public function IncrementWhenCodeIsUsed(Request $request){
         $invite =  Invite::where('code',$request->invite_code)->first();
-        if($invite->max_usages != null){
+        if($invite->max_usages !=
+            null){
             $invite->increment('uses',1);
         }
 
@@ -80,49 +78,58 @@ class InviteController extends Controller
         return view('board',['invite_code'=>$invite->code]);
     }
 
-
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
+     * This function look for an Invitation Code
+     * @return bool
      */
-    public function show($id)
+    public function searchInvitationCode($inviteCode): bool
     {
-        //
+        $invite =  Invite::where('code', $inviteCode)->first();
+        if($invite != null)
+        {
+            return true;
+        }
+        return false;
+
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
+     * Get InviteCode by Invite Code
+     * @param $inviteCode
+     * @return mixed
      */
-    public function edit($id)
+    public function getInvitation($inviteCode){
+        return Invite::where('code', $inviteCode)->first();
+    }
+
+    public function canJoin($invite)
     {
-        //
+        $dateVerified = ($invite->expires_at != null)
+            ? $this->verifyingDate($invite->expires_at) : true;
+        $usagesVerified = ($invite->max_usages != null)
+            ? $this->verifyingUsages($invite) : true;
+
+        return (($dateVerified || $usagesVerified) && $usagesVerified);
+    }
+
+    private function verifyingUsages($invite) : bool
+    {
+        if($invite->uses +1 <= $invite->max_usages)
+        {
+            $invite->uses = $invite->uses + 1;
+            $invite->save();
+            return true;
+        }
+        return false;
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param $fechaExpiracion
+     * @return bool
      */
-    public function update(Request $request, $id)
+    private function verifyingDate($fechaExpiracion) : bool
     {
-        //
+        return now() <= $fechaExpiracion;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

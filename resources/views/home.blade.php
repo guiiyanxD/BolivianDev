@@ -18,12 +18,12 @@
                             </div>
 
                             <div class="card-body">
-                                <form action="{{route('invitation.store')}}" method="POST">
+                                <form action="{{route('meet.storeAsHost')}}" method="POST">
                                     @csrf
                                     @method('POST')
                                     <div>
                                         <h5 class="small font-weight-bold text-center text-danger">
-                                            <li>Para generar un codigo sin limite de invitados seleccion cero </li>
+                                            <li>Para generar un codigo sin limites, genera la sala sin cambiar nada </li>
                                         </h5>
                                     </div>
 
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('board')}}" method="POST">
+                            <form action="{{route('meet.storeAsGuest')}}" method="POST">
                                 @csrf
                                 @method('POST')
                                 <input type="text" placeholder="coloca el codigo aqui" name="invite_code">

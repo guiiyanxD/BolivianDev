@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\NewMeetingAccess;
+use App\Events\UserMeetAccess;
 use App\Listeners\SaveDataToPivotTable;
+use App\Listeners\storeUserMeetAccess;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         NewMeetingAccess::class => [
             SaveDataToPivotTable::class,
         ],
+        UserMeetAccess::class => [
+            storeUserMeetAccess::class,
+        ]
     ];
 
     /**

@@ -8,13 +8,23 @@
    </div>
 
    <div class="container-fluid">
-        <div class="row">
+       <div class="row">
+        <div class="col-lg-12 px-0" id="toolbar-container" ></div>
+       </div>
+       <div class="row">
+
+
+           <div class="col-lg-8 px-0" id="paper">
+           </div>
+
+           <div class="col-lg-2 px-0" id="inspector">
+           </div>
             <div class="col-lg-2 px-0" id="stencil">
             </div>
-            <div class="col-lg-8 px-0" id="paper">
-            </div>
-            <div class="col-lg-2 px-0" id="inspector">
-            </div>
+
+
+
+
         </div>
     </div>
    <script>
@@ -45,38 +55,27 @@
     <script src=" {{ asset('backbone/backbone.js')}} "></script>
     <script src=" {{ asset('Jointjs/dist/rappid.js')}} "></script>
     <script type="text/javascript">
-        joint.setTheme('modern'); //Definiendo el estilo que tendra la pizarra
+        joint.setTheme('dark'); //Definiendo el estilo que tendra la pizarra
         var graph = new joint.dia.Graph; // Instanciamos la pizarra
 
         var paper = new joint.dia.Paper({ // una vez instanciada la pizarra, instanciamos un paper que es la parte visible de la pizarra
-            el:document.getElementById('paper'), //elemento html donde se dibujara la pizarra
+            el: document.getElementById('paper'), //elemento html donde se dibujara la pizarra
             width: 1000,
+            // width: window.screen.width - window.screen.width * 0.30,
+            // height: window.screen.height - window.screen.height * 0.10,
             height: 1000,
-            gridSize: 10,
+            gridSize: 8,
             drawGrid: true,
             model: graph, // Set graph as the model for paper
-            defaultLink: function(elementView, magnet) {
+            defaultLink: function (elementView, magnet) {
                 return new joint.shapes.standard.Link({
-                    attrs: { line: { stroke: 'black' }}
+                    attrs: {line: {stroke: 'white'}}
                 });
             },
-            interactive: { linkMove: true },
-            snapLinks: { radius: 70 },
-            defaultConnectionPoint: { name: 'boundary' }
+            interactive: {linkMove: true},
+            snapLinks: {radius: 70},
+            defaultConnectionPoint: {name: 'boundary'}
         });
-
-        /*var paperScroller = new joint.ui.PaperScroller({
-            paper: paper,
-            autoResizePaper: true,
-            cursor: 'grab'
-        });
-
-        document.getElementById('paper').appendChild(paperScroller.el);
-        paperScroller.render().center();
-        */
-
-
-
 
         //HALO, OPCIONES DE CADA ELEMENTVIEW
         paper.on('cell:pointerup', function(cellView) {
@@ -86,98 +85,115 @@
             halo.render();
         });
 
-
-
-
         // Figuras por defecto
         // ------------
-
-        joint.dia.Element.define('myApp.MyShape', {
-            attrs: {
-                body: {
-                    refWidth: '100%',
-                    refHeight: '100%',
-                    strokeWidth: 2,
-                    stroke: '#000000',
-                    fill: '#FFFFFF'
-                },
+        var stuffRelativeToText = joint.dia.Element.define('RelativeToText',{
+            attrs:{
                 label: {
-                    textVerticalAnchor: 'middle',
                     textAnchor: 'middle',
-                    refX: '50%',
-                    refY: '50%',
-                    fontSize: 14,
-                    fill: '#333333'
+                    textVerticalAnchor: 'middle',
+                    fontSize: 48
                 },
-                root: {
-                    magnet: false // Disable the possibility to connect the body of our shape. Only ports can be connected.
-                }
-            },
-            level: 10,
-            ports: {
-                groups: {
-                    'in': {
-                        markup: [{
-                            tagName: 'circle',
-                            selector: 'portBody',
-                            attributes: { r: 12 }
-                        }],
-                        z: -1,
-                        attrs: {
-                            portBody: {
-                                magnet: true,
-                                fill: '#7C68FC'
-                            }
-                        },
-                        position: { name: 'left' },
-                        label: { position: { name: 'left' }}
-                    },
-                    'out': {
-                        markup: [{
-                            tagName: 'circle',
-                            selector: 'portBody',
-                            attributes: { r: 12 }
-                        }],
-                        z: -1,
-                        attrs: {
-                            portBody: {
-                                magnet: true,
-                                fill: '#7C68FC'
-                            }
-                        },
-                        position: { name: 'right' },
-                        label: { position: { name: 'right' }}
-                    }
+                e: {
+                    strokeWidth: 1,
+                    stroke: '#000000',
+                    fill: 'rgba(255,0,0,0.3)'
+                },
+                r: {
+                    strokeWidth: 1,
+                    stroke: '#000000',
+                    fill: 'rgba(0,255,0,0.3)'
+                },
+                c: {
+                    strokeWidth: 1,
+                    stroke: '#000000',
+                    fill: 'rgba(0,0,255,0.3)'
+                },
+                outline: {
+                    ref: 'label',
+                    x: '-calc(0.5*w)',
+                    y: '-calc(0.5*h)',
+                    width: 'calc(w)',
+                    height: 'calc(h)',
+                    strokeWidth: 1,
+                    stroke: '#000000',
+                    strokeDasharray: '5 5',
+                    strokeDashoffset: 2.5,
+                    fill: '#45a'
                 }
             }
-        }, {
-            markup: [{
+        },{
+            markup: [
+                {
+                tagName: 'ellipse',
+                selector: 'e'
+            },
+                {
                 tagName: 'rect',
-                selector: 'body'
-            }, {
+                selector: 'r'
+            },
+                {
+                tagName: 'circle',
+                selector: 'c'
+            },
+                {
                 tagName: 'text',
                 selector: 'label'
+            },
+                {
+                tagName: 'rect',
+                selector: 'outline'
             }]
         });
+        // to make all the stuff be relative tp the text
+        var relativeToTextt = new stuffRelativeToText();
+        relativeToTextt.attr({
+            label: {
+                text: 'Hello, World!'
+            },
+            e: {
+                ref: 'label',
+                rx: 'calc(0.5*w)',
+                ry: 'calc(0.25*h)',
+                cx: '-calc(0.5*w)',
+                cy: '-calc(0.25*h)'
+            },
+            r: {
+                ref: 'label',
+                // additional x offset
+                x: 10,
+                // additional y offset
+                y: 'calc(0.5*h-10)',
+                width: 'calc(0.5*w)',
+                height: 'calc(0.5*h)'
+            },
+            c: {
+                ref: 'label',
+                r: 'calc(0.5*d)'
+                // c is already centered at label anchor
+            }
+        });
+
+
 
         // Stencil
         // -------
         var stencil = new joint.ui.Stencil({
             paper: paper,
             scaleClones: true,
-            width: 240,
+            width: 200,
             groups: {
-                myShapesGroup1: { index: 1, label: ' My Shapes 1' },
-                myShapesGroup2: { index: 2, label: ' My Shapes 2' },
-                umlShapes: { index: 3, label: 'Formas Uml'}
+                myBasicStuff: { index: 1, label: ' Figuras basicas' },
+                myMagneticStuff: { index: 2, label: ' Figuras magneticas' },
+                umlShapes: { index: 3, label: 'Formas Uml'},
+                // relativeStuff:{ index:4 , label: 'Relativas al texto'}
             },
             dropAnimation: true,
             groupsToggleButtons: true,
-            layout: true  // Use default Grid Layout
+            layout: true // Use default Grid Layout
         });
-
-
         document.getElementById('stencil').appendChild(stencil.el);
+        // stencil.render().loadGroup([relativeToTextt],'relativeStuff');
         stencil.render().load({
             umlShapes:[{
                 type:'uml.Abstract',
@@ -186,10 +202,6 @@
                     'Metodo 1',
                     'Metodo 2'
                 ],
-            },{
-                type:'uml.Aggregation'
-            },{
-                type:'uml.Association'
             },{
                 type:'uml.Class'
             },{
@@ -209,38 +221,43 @@
             },{
                 type:'uml.Transition'
             }],
-            myShapesGroup1: [{
-                type: 'standard.Rectangle'
+            myBasicStuff: [{
+                type: 'standard.Rectangle',
+                attrs:{
+                    label: {text: 'Rectangle'}
+                }
             },{
-                type: 'standard.Ellipse'
-            },{
-                type: 'standard.Circle'
-            },{
-                type: 'standard.Path'
-            },{
-                type: 'standard.Polygon'
-            },{
-                type: 'standard.Polyline'
-            },{
-                type: 'standard.Cylinder'
-            },{
-                type: 'standard.HeaderedRectangle'
-            },{
-                type: 'standard.TextBlock'
-            },{
-                type: 'standard.Link'
-            },{
-                type: 'standard.DoubleLink'
-            },{
-                type: 'standard.ShadowLink'
-            }],
-            myShapesGroup2: [{
-                type: 'standard.Cylinder'
+                type: 'standard.Ellipse',
+                attrs:{
+                    label: {text: 'Ellipse'}
+                }
             }, {
-                type: 'myApp.MyShape',
-                attrs: { label: { text: 'Shape' }},
-                ports: { items: [{ group: 'in' },{ group: 'in' }, { group: 'out' }, { group: 'out' }] }
-            }]
+                type: 'standard.Circle',
+                attrs:{
+                    label: {text: 'Circle'}
+                }
+            },{
+                type: 'standard.Cylinder'
+                // attrs:{
+                //     label: {text: 'Cylinder'}
+                // }
+            },{
+                type: 'standard.TextBlock',
+                attrs:{
+                    label: {text: 'Text block'}
+                }
+            },{
+                type: 'RelativeToText',
+                attrs:{
+                    label: {
+                        text: 'Text',
+                        fontSize: 25,
+                    },
+                }
+            }],
+            myMagneticStuff: [{
+                type: 'standard.Cylinder'
+            }],
         });
 
         //document.getElementById('clear-graph').onclick( function() {graph.clear()});
@@ -257,31 +274,7 @@
                 cell: elementView.model,
                 inputs: {
                     attrs:{
-                        label:{
-                            text:{
-                                type: 'text',
-                                label: 'Label',
-                                group: 'basic',
-                                index: 1
-                            },
-                            'font-size':{
-                                type: 'range',
-                                unit: 'x',
-                                min: 8,
-                                max: 30,
-                                label: 'Font size',
-                                group: 'basic',
-                                index: 2
-                            },
-                            'font-family': {
-                                type: 'select',
-                                options: ['Arial', 'Times New Roman', 'Courier New'],
-                                label: 'Font family',
-                                group: 'basic',
-                                index: 3
-                            }
-                        },
-                        myShapesGroup1:{
+                        circle:{
                             fill:{
                                 type: 'color-palette',
                                 options: [
@@ -294,8 +287,67 @@
                                 label: 'Fill color',
                                 group: 'basic',
                                 index: 4
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: [
+                                    { content: '#FFFFFF' },
+                                    { content: '#FF0000' },
+                                    { content: '#00FF00' },
+                                    { content: '#0000FF' },
+                                    { content: '#000000' }
+                                ],
+                                label: 'Outline color',
+                                group: 'basic',
+                                index: 5
+                            },
+                            'stroke-width': {
+                                type: 'range',
+                                min: 0,
+                                max: 50,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'basic',
+                                index: 6
                             }
-                        }
+                        },
+                        rectangle:{
+                            fill:{
+                                type: 'color-palette',
+                                options: [
+                                    { content: '#FFFFFF' },
+                                    { content: '#FF0000' },
+                                    { content: '#00FF00' },
+                                    { content: '#0000FF' },
+                                    { content: '#000000' }
+                                ],
+                                label: 'Fill color',
+                                group: 'basic',
+                                index: 8
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: [
+                                    { content: '#FFFFFF' },
+                                    { content: '#FF0000' },
+                                    { content: '#00FF00' },
+                                    { content: '#0000FF' },
+                                    { content: '#000000' }
+                                ],
+                                label: 'Outline color',
+                                group: 'basic',
+                                index: 9
+                            },
+                            'stroke-width': {
+                                type: 'range',
+                                min: 0,
+                                max: 50,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'basic',
+                                index: 10
+                            }
+                        },
                     },
                     level: {
                         type: 'range',
@@ -305,7 +357,7 @@
                         defaultValue: 6,
                         label: 'Level',
                         group: 'advanced',
-                        index: 5
+                        index: 7
                     }
                 },
                 groups: {
@@ -357,8 +409,9 @@
             },
             tools: [
                 { type: 'button', name: 'clear', group: 'clear', text: 'Clear Diagram' },
-                { type: 'zoom-out', name: 'zoom-out', group: 'zoom' },
-                { type: 'zoom-in', name: 'zoom-in', group: 'zoom' }
+                { type: 'zoom-out', name: 'zoom-out', group: 'zoom', text: 'Zoom out' },
+                { type: 'zoom-in', name: 'zoom-in', group: 'zoom', text: 'Zoom in' },
+                // { type: ''}
             ],
             references: {
                 paper: paper // built in zoom-in/zoom-out control types require access to paperScroller instance
@@ -371,7 +424,6 @@
 
         document.getElementById('toolbar-container').appendChild(toolbar.el);
         toolbar.render();
-
 
 
     </script>
