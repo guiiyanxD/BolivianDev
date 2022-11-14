@@ -24,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $userMeetController = new UserMeetController();
+        $meets = $userMeetController->getMeetsByUser();
+        return view('home', ['meets'=> $meets]);
     }
 }

@@ -1,16 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container" >
+    <div class="row justify-content-around">
+        <div class="col-lg-8 ">
             <div class="card mt-5">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                @if(session('message'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" >
+                        {{session('message')}}
+                    </div>
+                @endif
+                    @if(session('editedInvitation'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" >
+                            {{session('editedInvitation')}}
+                        </div>
+                    @endif
+                    <div class="card-header">{{ __('Dashboard') }}</div>
 
-                <div class="card-body">
+                    <div class="card-body">
 
-                    <h5 class="font-weight-bold">{{ __('Ya has iniciado sesion! Ahora a diagramar') }}</h5>
-                    <!-- El modal comeinza aca -->
+                        <h5 class="font-weight-bold">{{ __('Ya has iniciado sesion! Ahora a diagramar') }}</h5>
+                        <!-- El modal comeinza aca -->
 
                         <div class="card mt-2">
                             <div class="card-header" style="background-color: #36382E">
@@ -28,6 +38,14 @@
                                     </div>
 
                                     <div>
+                                        <label for="name">Nombre</label>
+                                        <input type="text" placeholder="Nombre de la reunion" name="name">
+                                    </div>
+                                    <div>
+                                        <label for="description">Descripcion</label>
+                                        <input type="text" placeholder="Description de la reunion" name="description">
+                                    </div>
+                                    <div>
                                         <label for="max">Cantidad de invitados</label>
                                         <input type="number" placeholder="cant de invitados" min="0" max="35" name="max">
                                     </div>
@@ -40,7 +58,7 @@
                             </div>
                         </div>
 
-                    <hr>
+                        <hr>
                         <div class="card">
                             <div class="card-header" style="background-color: #36382E">
                                 <h5 class="card-title" style="color: #5BC3EB">{{__('O unete a una sesion ya existente')}}</h5>
@@ -56,9 +74,47 @@
                                 </button>
                             </form>
                         </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-lg-4 ">
+            <div class="card mt-5 mb-5">
+                <div class="card-header">
+                    {{ __('Continua tu trabajo con tus salas creadas') }}
+                </div>
+                <div class="card-body" style="height: 37em; overflow-y: auto">
+                    <div>
+                    @foreach($meets as $meet)
+                        <p>
+                            <strong>Nombre:</strong> {{$meet->meets->name}}
+                            <br>
+                            <strong>Descripcion:</strong>{{$meet->meets->description}}
+                            <br>
+                            <strong>Maxima Cantidad de invitados:</strong>  {{$meet->meets->invite->max_usages}}
+                            <br>
+                            <strong>Veces que el codigo fue usado:</strong>  {{$meet->meets->invite->uses}}
+                            <br>
+                            <strong>Fecha de expiracion:</strong> {{$meet->meets->invite->expires_at}}
+                        </p>
+
+                        <div>
+                            <a class="btn btn-info" href="{{route('invite.edit', [$meet->meets->id, $meet->meets->invite->id])}}">
+                                Editar
+                            </a>
+                            <a class="btn btn-success">
+                                Entrar
+                            </a>
+                        </div>
+                        <hr>
+                    @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+
 </div>
 @endsection

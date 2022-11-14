@@ -15,6 +15,8 @@ class CreateMeetsTable extends Migration
     {
         Schema::create('meets', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 100);
+            $table->string('description', 250);
             $table->UnsignedBigInteger('invite_id');
             $table->timestamps();
 

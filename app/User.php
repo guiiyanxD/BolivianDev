@@ -38,8 +38,11 @@ class User extends Authenticatable
     ];
 
 
-    public function Junta(){
+    /*public function Junta(){
         return $this->hasMany(Junta::class);
-    }
+    }*/
 
+    public function UserMeet(){
+        return $this->hasMany(UserMeet::class, 'user_id');
+    }
 }

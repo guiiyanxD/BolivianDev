@@ -11,4 +11,12 @@ class UserMeet extends Model
     protected $fillable = [
         'user_id', 'meet_id', 'participation_type_id'
     ];
+
+    public function Users(){
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function Meets(){
+        return $this->belongsTo(Meet::class,'meet_id');
+    }
 }

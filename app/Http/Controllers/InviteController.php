@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewMeetingAccess;
 use App\Invite;
+use App\Meet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -131,5 +132,31 @@ class InviteController extends Controller
     {
         return now() <= $fechaExpiracion;
     }
+
+    public function edit($meetId, $inviteId){
+        $meetController = new MeetController();
+        $meet = $meetController->getMeetById($meetId);
+        $invite = $this->getInvitebyId($inviteId);
+        return view('invite.edit', [
+            'meet'=>$meet,
+            'invite' => $invite
+            ]);
+    }
+
+    public function update(Request $request, $meetId, $inviteId){
+        $meetController = new MeetController();
+        $meetController->update($meetId, $request->name, $request->description);
+        $invite = $this->getInvitebyId($inviteId);
+        $invite->update([
+           'expires_at' => $request->expires_at,
+           'max_usages' => $request->max_usages,
+        ]);
+        return redirect()->route('home')->with('editedInvitation','Codigo de invitacion editado correctamente');
+    }
+
+    public function getInvitebyId($id){
+        return Invite::where('id', $id)->first();
+    }
+
 
 }

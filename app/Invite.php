@@ -12,6 +12,10 @@ class Invite extends Model
         'code','max_usages','to','uses','expires_at'
     ];
 
+    public function Meet(){
+        return $this->hasOne(Meet::class, 'invite_id');
+    }
+
     public function Junta(){
         return $this->belongsTo(Junta::class);
     }

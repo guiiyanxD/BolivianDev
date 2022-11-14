@@ -6,6 +6,7 @@ use App\Events\UserMeetAccess;
 use App\Meet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use mysql_xdevapi\Exception;
 
 class MeetController extends Controller
 {
@@ -18,14 +19,20 @@ class MeetController extends Controller
      */
     public function storeAsHost(Request $request)
     {
-        $inviteController = new InviteController();
-        $code = $inviteController->store($request->max, $request->fecha);
+        try {
+            $inviteController = new InviteController();
+            $code = $inviteController->store($request->max, $request->fecha);
 
-        $meet = Meet::create([
-            'invite_id' => $code->id
-        ]);
-        event(new UserMeetAccess($meet, Auth::user(),1));
-        return redirect()->route('board', ['invite_code'=> $code->code]);
+            $meet = Meet::create([
+                'invite_id' => $code->id,
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+            event(new UserMeetAccess($meet, Auth::user(), 1));
+            return redirect()->route('board', ['invite_code' => $code->code]);
+        }catch (\Exception $e){
+            return redirect()->route('home')->with(['message' => "Asegurese de completar todos los campos requeridos"]);
+        }
     }
 
     public function storeAsGuest(Request $request)
@@ -46,6 +53,17 @@ class MeetController extends Controller
         return dd("No puedes unirte a esta reunion o esta no existe");
     }
 
+    public function getMeetById($id){
+        return Meet::where('id', $id)->first();
+    }
+
+    public function update($id, $newName, $newDescription){
+        $meet = $this->getMeetById($id);
+        return $meet->update([
+            'name' => $newName,
+            'description' => $newDescription,
+        ]);
+    }
 
     private function searchMeetByInvitationCode($inviteId)
     {
@@ -61,5 +79,8 @@ class MeetController extends Controller
 
     }
 
+    public function reJoinAsHost(){
+
+    }
 
 }

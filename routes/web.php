@@ -44,6 +44,12 @@ Route::post('meet/join',[\App\Http\Controllers\MeetController::class, 'storeAsGu
 
 
 /**
+ * Route to edit Invitation Code rules
+ */
+Route::get('invitation_code/{meet_id}/{invite_id}/edit', [\App\Http\Controllers\InviteController::class,'edit'])->name('invite.edit');
+Route::put('invitation/{meet_id}/{invite_id}/update',[\App\Http\Controllers\InviteController::class,'update'])->name('invite.update');
+
+/**
  * Main route after logged to create a meeting
  */
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
