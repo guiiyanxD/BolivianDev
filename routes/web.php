@@ -44,7 +44,7 @@ Route::post('meet/join',[\App\Http\Controllers\MeetController::class, 'storeAsGu
 
 
 /**
- * Route to edit Invitation Code rules
+ * Route to edit Invitation Code rules and name and description of a meet
  */
 Route::get('invitation_code/{meet_id}/{invite_id}/edit', [\App\Http\Controllers\InviteController::class,'edit'])->name('invite.edit');
 Route::put('invitation/{meet_id}/{invite_id}/update',[\App\Http\Controllers\InviteController::class,'update'])->name('invite.update');

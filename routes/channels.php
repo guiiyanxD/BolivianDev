@@ -17,6 +17,11 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('NewMeetingAccess', function ($user){
-   return $user;
+Broadcast::channel('meet.{id}', function ($meet) {
+//    return dd($meet);
+    $session = \App\UserMeet::where([['user_meet', $meet->id],['user_id', auth()->user()->id]]);
+    if($session){
+        return json_encode(\Illuminate\Support\Facades\Auth::user());
+    }
+//    return json_encode($session);
 });

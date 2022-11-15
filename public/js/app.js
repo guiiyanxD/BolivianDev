@@ -43487,7 +43487,7 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // require('./board');
 
 /***/ }),
 
@@ -43534,12 +43534,12 @@ window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/d
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: "f9b45c8af96e31c41d8a",
-  //cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+  cluster: "mt1",
   wsHost: window.location.hostname,
   wsPort: 6001,
   forceTLS: false,
   disableStats: true,
-  encrypted: true //authEndpoint: '/broadcasting/auth',
+  encrypted: false //authEndpoint: '/broadcasting/auth',
 
 });
 
