@@ -18,8 +18,10 @@ class CreateMeetsTable extends Migration
             $table->string('name', 100);
             $table->string('description', 250);
             $table->UnsignedBigInteger('invite_id');
+            $table->unsignedBigInteger('backup_id');
             $table->timestamps();
 
+            $table->foreign('backup_id')->on('backup')->references('id');
             $table->foreign('invite_id')->on('invites')->references('id');
         });
     }

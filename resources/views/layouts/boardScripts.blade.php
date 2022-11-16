@@ -1,22 +1,16 @@
-{{--<script src="{{asset('js/board.js')}}">
-
-</script>--}}
-
 
 <link rel="stylesheet" type="text/css" href="{{asset('Jointjs/dist/rappid.css')}}">
 <script src=" {{ asset('jquery/dist/jquery.js')}} "></script>
 <script src=" {{ asset('lodash/lodash.js')}} "></script>
 <script src=" {{ asset('backbone/backbone.js')}} "></script>
 <script src=" {{ asset('Jointjs/dist/rappid.js')}} "></script>
-<script type="text/javascript">
+<script  type="text/javascript">
+
     joint.setTheme('dark'); //Definiendo el estilo que tendra la pizarra
     var graph = new joint.dia.Graph; // Instanciamos la pizarra
-
     var paper = new joint.dia.Paper({ // una vez instanciada la pizarra, instanciamos un paper que es la parte visible de la pizarra
         el: document.getElementById('paper'), //elemento html donde se dibujara la pizarra
         width: 1000,
-        // width: window.screen.width - window.screen.width * 0.30,
-        // height: window.screen.height - window.screen.height * 0.10,
         height: 800,
         gridSize: 8,
         drawGrid: true,
@@ -30,6 +24,13 @@
         snapLinks: {radius: 70},
         defaultConnectionPoint: {name: 'boundary'}
     });
+
+    /**
+     *Persistence done by loading the graph from Json
+     */
+    @if ( isset($json) )
+    graph.fromJSON(JSON.parse( @json($json)));
+    @endif
 
     //HALO, OPCIONES DE CADA ELEMENTVIEW
     paper.on('cell:pointerup', function(cellView) {
@@ -279,12 +280,12 @@
     var toolbar = new joint.ui.Toolbar({
         groups: {
             clear: { index: 1 },
-            zoom: { index: 2 }
+            // zoom: { index: 2 }
         },
         tools: [
             { type: 'button', name: 'clear', group: 'clear', text: 'Clear Diagram' },
-            { type: 'zoom-out', name: 'zoom-out', group: 'zoom', text: 'Zoom out' },
-            { type: 'zoom-in', name: 'zoom-in', group: 'zoom', text: 'Zoom in' },
+            // { type: 'zoom-out', name: 'zoom-out', group: 'zoom', text: 'Zoom out' },
+            // { type: 'zoom-in', name: 'zoom-in', group: 'zoom', text: 'Zoom in' },
             // { type: ''}
         ],
         references: {
@@ -299,10 +300,7 @@
     document.getElementById('toolbar-container').appendChild(toolbar.el);
     toolbar.render();
 
-    function getJson(){
-        var jsonString = JSON.stringify(graph.toJSON());
-        console.log(jsonString);
-    }
+
 
 
 </script>

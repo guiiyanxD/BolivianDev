@@ -12,17 +12,14 @@
     window.Echo.join('meet.' + meetId )
         .here((users) => {
             onlineUsers = users.length;
-            console.log('Estan aqui: ' + users.toString())
             update_online_counter();
         })
         .joining((user) => {
             onlineUsers++;
-            console.log("acaba de entrar:" +  user.toString())
             update_online_counter();
         })
         .leaving((user) => {
             onlineUsers--;
-            console.log('se fue: ' +user.toString())
             update_online_counter();
         })
 

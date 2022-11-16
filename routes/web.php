@@ -55,6 +55,12 @@ Route::put('invitation/{meet_id}/{invite_id}/update',[\App\Http\Controllers\Invi
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+/**
+ * Routes to save and update json backup of the meets element
+ */
+Route::any('meet/backup/update', [\App\Http\Controllers\BackupController::class,'update'])->name('backup.update');
+Route::any('meet/backup/load',[\App\Http\Controllers\BackupController::class,'load'])->name('backup.load');
+
 Auth::routes();
 \Illuminate\Support\Facades\Broadcast::routes();
 //require __DIR__.'/auth.php';

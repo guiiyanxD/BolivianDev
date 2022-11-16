@@ -9,7 +9,7 @@ class Meet extends Model
     protected $table = 'meets';
 
     protected $fillable = [
-        'invite_id','name','description'
+        'invite_id','name','description', 'backup_id'
     ];
 
     public function Invite(){
@@ -18,5 +18,9 @@ class Meet extends Model
 
     public function UserMeet(){
         return $this->hasMany(UserMeet::class, 'meet_id');
+    }
+
+    public function Backup(){
+        return $this->belongsTo(Backup::class, 'backup_id');
     }
 }

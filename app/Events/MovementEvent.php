@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Meet;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,14 +15,15 @@ class MovementEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $meet;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Meet $meet)
     {
-        //
+        $this->meet = $meet;
     }
 
     /**
@@ -31,7 +33,7 @@ class MovementEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('boardChannel');
+        return new PresenceChannel('boardChannel');
     }
 
     /**
@@ -40,6 +42,6 @@ class MovementEvent implements ShouldBroadcast
      * @return string
      */
     public function broadcastAs(){
-        return 'boardChannel';
+        //
     }
 }
