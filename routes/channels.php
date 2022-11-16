@@ -1,5 +1,7 @@
 <?php
 
+use App\UserMeet;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -19,9 +21,17 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 
 Broadcast::channel('meet.{id}', function ($meet) {
 //    return dd($meet);
-    $session = \App\UserMeet::where([['user_meet', $meet->id],['user_id', auth()->user()->id]]);
+    $session = UserMeet::where([['user_meet', $meet->id],['user_id', auth()->user()->id]]);
     if($session){
-        return json_encode(\Illuminate\Support\Facades\Auth::user());
+        return json_encode(Auth::user());
     }
 //    return json_encode($session);
+});
+
+Broadcast::channel('movFromMeet.{meet_id}', function($meet){
+//    $session = UserMeet::where([['meet_id', $meet->id],['user_id', auth()->user()->id]])->get();
+//    $backup = \App\Backup::where('id', $meet->backup_id)->first();
+    if(true){
+        return json_encode($meet);
+    }
 });

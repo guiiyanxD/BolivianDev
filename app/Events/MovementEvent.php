@@ -33,15 +33,8 @@ class MovementEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('boardChannel');
+        return new PresenceChannel('movFromMeet'. $this->meet->id);
     }
 
-    /**
-     * The event's broadcast name.
-     *
-     * @return string
-     */
-    public function broadcastAs(){
-        //
-    }
+
 }

@@ -40,26 +40,20 @@
 
 
        const meetID = {{$meet_id}};
-       {{--const gettedJson = {{$json}}--}}
-
 
        graph.on('change:position', function (){
-           console.log("posicion");
            getJson(  JSON.stringify(graph.toJSON()) );
        });
 
        graph.on('change:attrs', function(){
-           console.log("atributos");
            getJson(  JSON.stringify(graph.toJSON()) );
        });
 
        graph.on('add', function(){
-           console.log("adicion");
            getJson( JSON.stringify(graph.toJSON()) );
        });
 
        graph.on('remove', function(){
-           console.log("sustraccion");
            getJson( JSON.stringify(graph.toJSON()) );
        });
 
@@ -81,22 +75,15 @@
            });
        }
 
-       function loadJson(){
-            $.ajax({
-                type:"get",
-                url: "meet/backup/load",
-                data:{
-                    meet_id: meetID,
-                },
-                success: function(data){
-                    graph.fromJSON(JSON.parse(data));
-                    console.log("ya se actualizo pero no lo ves: " + data.toString());
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            // graph.fromJSON(JSON.parse(jsonString));
+       window.Echo.join('movFromMeet.' + meetID)
+           .listen('MovementEvent',(e) => {
+               console.log("llegue aqui" + e.id);
+               // updateFromJson($backup);
+           });
+
+       function updateFromJson($backup){
+           console.log("updateFromJson llego aqui");
+            graph.fromJSON(JSON.parse($backup));
        }
 
 

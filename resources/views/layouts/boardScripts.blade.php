@@ -301,6 +301,8 @@
     toolbar.render();
 
 
-
+    /*function updateFromJson($backup){
+        graph.fromJSON(JSON.parse($backup));
+    }*/
 
 </script>
