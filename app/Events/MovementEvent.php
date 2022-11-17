@@ -2,16 +2,18 @@
 
 namespace App\Events;
 
+use App\Backup;
 use App\Meet;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MovementEvent implements ShouldBroadcast
+class MovementEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,7 +25,8 @@ class MovementEvent implements ShouldBroadcast
      */
     public function __construct(Meet $meet)
     {
-        $this->meet = $meet;
+        $backup = Backup::where('id', $meet->backup_id)->first();
+        $this->meet = $backup;
     }
 
     /**
@@ -33,7 +36,7 @@ class MovementEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('movFromMeet'. $this->meet->id);
+        return new PresenceChannel('movsFromMeet.'. $this->meet->id);
     }
 
 

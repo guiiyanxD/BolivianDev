@@ -35,55 +35,103 @@
 
    @include('layouts.onlineCounter')
    @include('layouts.boardScripts')
-   <script>
+   <script type="text/javascript">
+
 
 
 
        const meetID = {{$meet_id}};
 
+       /*
        graph.on('change:position', function (){
+           console.log("change target");
            getJson(  JSON.stringify(graph.toJSON()) );
-       });
+       });*/
 
-       graph.on('change:attrs', function(){
+       paper.on('cell:pointerup change:position', function (cell) {
            getJson(  JSON.stringify(graph.toJSON()) );
+           updateFromJson();
        });
 
-       graph.on('add', function(){
-           getJson( JSON.stringify(graph.toJSON()) );
+       paper.on('change:attrs', function(){
+           getJson(  JSON.stringify(graph.toJSON()) );
+           updateFromJson();
+
        });
 
-       graph.on('remove', function(){
+
+       paper.on('element:add', function(){
            getJson( JSON.stringify(graph.toJSON()) );
+           updateFromJson();
+
        });
+
+       paper.on('element:remove', function(){
+           getJson( JSON.stringify(graph.toJSON()) );
+           updateFromJson();
+       });
+
+       /*graph.on('all', function(eventName, cell) {
+           getJson( JSON.stringify(graph.toJSON()) );
+           console.log(arguments);
+       });*/
 
        function getJson($jsonPar){
-           var jsonString = $jsonPar ;
            $.ajax({
                type:"Put",
                url:"meet/backup/update",
                data:{
-                   json: jsonString,
+                   json: $jsonPar,
                    meet_id: meetID,
                },
-               /*success: function(){
-                   loadJson();
-               },*/
+               success: function(){
+                   console.log("ya se guardo el movimiento en la BD");
+                   // updateFromJson($jsonPar);
+               },
                headers: {
                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                },
            });
        }
 
-       window.Echo.join('movFromMeet.' + meetID)
+
+
+
+
+
+       function updateFromJson(){
+           console.log("updateFromJson llego aqui");
+           // graph.fromJSON(JSON.parse($backup));
+           $.ajax({
+               type:"post",
+               url:"meet/backup/load",
+               data:{
+                    meet_id: meetID,
+               },
+               success: function($data){
+                   console.log("he vuelto del BackupController->load() con exito"+ $data);
+               },
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+           });
+       }
+
+       Echo.join('movsFromMeet.' + meetID)
            .listen('MovementEvent',(e) => {
-               console.log("llegue aqui" + e.id);
-               // updateFromJson($backup);
+               // console.log("que estoy haciendo mal?" );
+               console.log("que estoy haciendo mal2? " + JSON.stringify(e.meet.backup));
+               reLoadGarphFromJson(e.meet.backup);
+           })
+           .error((error)=>{
+               console.log(error);
            });
 
-       function updateFromJson($backup){
-           console.log("updateFromJson llego aqui");
-            graph.fromJSON(JSON.parse($backup));
+
+       function reLoadGarphFromJson(data){
+
+           console.log("reloadFromJson" + data);
+           graph.fromJSON(JSON.parse( (data) ));
        }
 
 

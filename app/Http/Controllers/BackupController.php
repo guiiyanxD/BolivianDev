@@ -28,7 +28,7 @@ class BackupController extends Controller
 
         $meetController = new MeetController();
         $meet = $meetController->getMeetById($request->meet_id);
-        $this->load($meet);
+//        $this->load($meet);
         return response(200);
     }
 
@@ -37,9 +37,11 @@ class BackupController extends Controller
         return Backup::where('id', $meet->backup_id)->first();
     }
 
-    public function load(Meet $meet){
-//        return dd($meet);
-        broadcast(new MovementEvent($meet));
+    public function load(Request $request){
+        $meetController = new MeetController();
+        $meet = $meetController->getMeetById($request->meet_id);
+        broadcast(new MovementEvent($meet))->toOthers();
+
         return response(200);
     }
 }

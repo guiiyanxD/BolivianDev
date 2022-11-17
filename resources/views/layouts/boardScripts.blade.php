@@ -12,7 +12,7 @@
         el: document.getElementById('paper'), //elemento html donde se dibujara la pizarra
         width: 1000,
         height: 800,
-        gridSize: 8,
+        gridSize: 10,
         drawGrid: true,
         model: graph, // Set graph as the model for paper
         defaultLink: function (elementView, magnet) {
@@ -31,6 +31,8 @@
     @if ( isset($json) )
     graph.fromJSON(JSON.parse( @json($json)));
     @endif
+
+
 
     //HALO, OPCIONES DE CADA ELEMENTVIEW
     paper.on('cell:pointerup', function(cellView) {
@@ -301,8 +303,6 @@
     toolbar.render();
 
 
-    /*function updateFromJson($backup){
-        graph.fromJSON(JSON.parse($backup));
-    }*/
+
 
 </script>

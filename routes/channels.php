@@ -1,5 +1,7 @@
 <?php
 
+use App\Backup;
+use App\Meet;
 use App\UserMeet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
@@ -27,11 +29,17 @@ Broadcast::channel('meet.{id}', function ($meet) {
     }
 //    return json_encode($session);
 });
-
-Broadcast::channel('movFromMeet.{meet_id}', function($meet){
-//    $session = UserMeet::where([['meet_id', $meet->id],['user_id', auth()->user()->id]])->get();
-//    $backup = \App\Backup::where('id', $meet->backup_id)->first();
-    if(true){
-        return json_encode($meet);
+/**
+ * En un channel siempre el primer parametro sera el del usuario que se esta intentado
+ * autenticar y asi como una ruta http, los parametros enviados podran usarse en el callback,
+ * por lo tanto, los parametros que le pase, podre usarlos dentro del
+ * proceso de autenticacion
+ */
+Broadcast::channel('movsFromMeet.{meet_id}', function($user, $meet_id){
+    $session = UserMeet::where([['meet_id', $meet_id],['user_id', auth()->user()->id]])->get();
+    $meet = Meet::where('id', $meet_id)->first();
+    $backup = Backup::where('id', $meet->backup_id)->first();
+    if($session){
+        return $backup;
     }
 });

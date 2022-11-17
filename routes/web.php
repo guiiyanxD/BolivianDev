@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\BackupController;
+use App\Http\Controllers\InviteController;
+use App\Http\Controllers\MeetController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,23 +35,23 @@ Route::middleware(['auth'])->group(function() {
 /**
  * Routes to create and join to a meet being a host
  */
-Route::post('meet/store', [\App\Http\Controllers\MeetController::class, 'storeAsHost'])
+Route::post('meet/store', [MeetController::class, 'storeAsHost'])
     ->name('meet.storeAsHost');
-Route::any('/board', [\App\Http\Controllers\MeetController::class,'joinToMeet'])
+Route::any('/board', [MeetController::class,'joinToMeet'])
     ->name('board');
 
 /**
  * Routes to join to meet as guest
  */
-Route::post('meet/join',[\App\Http\Controllers\MeetController::class, 'storeAsGuest'])
+Route::post('meet/join',[MeetController::class, 'storeAsGuest'])
     ->name('meet.storeAsGuest');
 
 
 /**
  * Route to edit Invitation Code rules and name and description of a meet
  */
-Route::get('invitation_code/{meet_id}/{invite_id}/edit', [\App\Http\Controllers\InviteController::class,'edit'])->name('invite.edit');
-Route::put('invitation/{meet_id}/{invite_id}/update',[\App\Http\Controllers\InviteController::class,'update'])->name('invite.update');
+Route::get('invitation_code/{meet_id}/{invite_id}/edit', [InviteController::class,'edit'])->name('invite.edit');
+Route::put('invitation/{meet_id}/{invite_id}/update',[InviteController::class,'update'])->name('invite.update');
 
 /**
  * Main route after logged to create a meeting
@@ -58,10 +62,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 /**
  * Routes to save and update json backup of the meets element
  */
-Route::any('meet/backup/update', [\App\Http\Controllers\BackupController::class,'update'])->name('backup.update');
-Route::any('meet/backup/load',[\App\Http\Controllers\BackupController::class,'load'])->name('backup.load');
+Route::any('meet/backup/update', [BackupController::class,'update'])->name('backup.update');
+Route::post('meet/backup/load',[BackupController::class,'load'])->name('backup.load');
 
 Auth::routes();
-\Illuminate\Support\Facades\Broadcast::routes();
+Broadcast::routes();
 //require __DIR__.'/auth.php';
 
