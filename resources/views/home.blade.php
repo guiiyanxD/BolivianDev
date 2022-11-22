@@ -88,7 +88,7 @@
                         <p>
                             <strong>Nombre:</strong> {{$meet->meets->name}}
                             <br>
-                            <strong>Descripcion:</strong>{{$meet->meets->description}}
+                            <strong>Codigo: </strong>{{$meet->meets->invite->code}}
                             <br>
                             <strong>Maxima Cantidad de invitados:</strong>  {{$meet->meets->invite->max_usages}}
                             <br>
