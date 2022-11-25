@@ -8,33 +8,39 @@
 <script src=" {{ asset('Jointjs/dist/rappid.js')}} "></script>
 <script src=" {{ asset('js/myJoint/myJointIndex.js') }} "></script>
 <script>
-    var myjoint = new MyJointIndex();
+    let myjoint = new MyJointIndex();
     const meetID = {{$meet_id}};
 
-
-    myjoint.paper.on(' change:position', function (cell) {
+    myjoint.paper.on(' change:position ', function(){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
-        // setTimeout(function (){}, 1000);
-
+        console.log( "change position" );
         updateFromJson();
+    });
+
+
+
+    myjoint.paper.on(' cell:pointerup', function () {
+        getJson(  JSON.stringify(myjoint.graph.toJSON()) );
+        console.log( "veremos " );
+        // updateFromJson();
     });
 
     myjoint.paper.on('cell:pointerup', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
-    })
+    });
 
     myjoint.graph.on('change:attrs', function(){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
     });
 
-    myjoint.graph.on('element:add', function(){
+    myjoint.paper.on('element:add', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
 
     });
 
-    myjoint.graph.on('element:remove', function(){
+    myjoint.paper.on('element:remove', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
     });
@@ -78,7 +84,7 @@
     function reLoadGarphFromJson(data){
 
         console.log("reloadFromJson" + data);
-        graph.fromJSON(JSON.parse( (data) ));
+        myjoint.graph.fromJSON(JSON.parse( (data) ));
     }
 
 </script>

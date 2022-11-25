@@ -13,13 +13,14 @@ class MyJointIndex{
     }
 
     intiPaper(){
+        joint.setTheme('dark');
         let graph = this.graph = new joint.dia.Graph;
 
         this.commandManager = new joint.dia.CommandManager({ graph: graph });
 
         let paper = this.paper = new joint.dia.Paper({
-            width: 1000,
-            height: screen.height*0.75,
+            width: 4000,
+            height: screen.height,
             gridSize: 10,
             drawGrid: true,
             model: graph,
@@ -5160,7 +5161,7 @@ class MyJointIndex{
                         }
                     }
                 },
-                {
+                /*{
                     type: 'button',
                     name: 'svg',
                     group: 'export',
@@ -5187,7 +5188,7 @@ class MyJointIndex{
                             'data-tooltip-position-selector': '.toolbar-container'
                         }
                     }
-                },
+                },*/
                 {
                     type: 'button',
                     name: 'print',
