@@ -64,12 +64,12 @@ Route::middleware(['auth'])->group(function() {
 
 
 
-    Auth::routes();
-    Broadcast::routes();
 
 
 });
 
+Auth::routes();
+Broadcast::routes();
 
 //require __DIR__.'/auth.php';
 
