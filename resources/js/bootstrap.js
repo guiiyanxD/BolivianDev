@@ -43,4 +43,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
      disableStats: true,
      encrypted: false,
      authEndpoint: '/broadcasting/auth',
+     auth: {
+         headers: {
+             'X-CSRF-TOKEN': '{{ csrf_token() }}',
+         }
+     }
 });
