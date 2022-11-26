@@ -11,6 +11,7 @@
 
     window.Echo.join('meet.' + meetId )
         .here((users) => {
+            console.log(users);
             onlineUsers = users.length;
             update_online_counter();
         })
