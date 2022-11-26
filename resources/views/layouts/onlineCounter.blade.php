@@ -21,6 +21,9 @@
         .leaving((user) => {
             onlineUsers--;
             update_online_counter();
-        })
+        }).
+        error((error)=>{
+            console.log(error)
+        });
 
 </script>
