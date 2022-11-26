@@ -42,5 +42,5 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
      forceTLS: false,
      disableStats: true,
      encrypted: false,
-     //authEndpoint: '/broadcasting/auth',
+     authEndpoint: '/broadcasting/auth',
 });
