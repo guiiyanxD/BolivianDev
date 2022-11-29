@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\Test;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MeetController;
@@ -71,5 +72,8 @@ Route::middleware(['auth'])->group(function() {
 Auth::routes();
 Broadcast::routes();
 
+Route::any('/test', function(){
+   broadcast( new Test());
+});
 //require __DIR__.'/auth.php';
 

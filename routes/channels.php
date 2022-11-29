@@ -43,3 +43,8 @@ Broadcast::channel('movsFromMeet.{meet_id}', function($user, $meet_id){
         return $backup;
     }
 });
+
+
+Broadcast::channel('test', function ($user) {
+    return true;
+});
