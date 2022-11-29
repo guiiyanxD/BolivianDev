@@ -4,8 +4,12 @@
     * */
     let onlineUsers = 0;
     var meetId = {{$meet_id}};
+    console.log("pre update online counter");
+
+
 
     function update_online_counter() {
+        console.log("update online counter");
         document.getElementById('online').textContent = '' + onlineUsers;
     }
 
