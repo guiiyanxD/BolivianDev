@@ -9,7 +9,7 @@
         document.getElementById('online').textContent = '' + onlineUsers;
     }
 
-    window.Echo.join('meet.' + meetId )
+    Echo.join('meet.' + meetId )
         .here((users) => {
             console.log(users);
             onlineUsers = users.length;

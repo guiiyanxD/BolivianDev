@@ -41,7 +41,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
      wsPort: 6001,
      forceTLS: false,
      disableStats: true,
-     encrypted: false,
+     encrypted: true,
      authEndpoint: '/broadcasting/auth',
      auth: {
          headers: {
