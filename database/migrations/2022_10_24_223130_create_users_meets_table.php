@@ -18,6 +18,7 @@ class CreateUsersMeetsTable extends Migration
             $table->UnsignedBigInteger('user_id');
             $table->UnsignedBigInteger('meet_id');
             $table->UnsignedBigInteger('participation_type_id');
+            $table->integer('entriesQty')->default(1);
 
             $table->timestamps();
 

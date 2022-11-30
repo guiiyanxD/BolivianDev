@@ -101,9 +101,6 @@
                             <a class="btn btn-info" href="{{route('invite.edit', [$meet->meets->id, $meet->meets->invite->id])}}">
                                 Editar
                             </a>
-                            <a class="btn btn-success">
-                                Entrar
-                            </a>
                         </div>
                         <hr>
                     @endforeach

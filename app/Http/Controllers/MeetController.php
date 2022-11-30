@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MovementEvent;
 use App\Events\PeopleSeeingMeeting;
 use App\Events\UserMeetAccess;
 use App\Meet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use function PHPUnit\Framework\isNull;
 
 class MeetController extends Controller
 {
@@ -37,7 +35,7 @@ class MeetController extends Controller
             ]);
 
             event(new UserMeetAccess($meet, Auth::user(), 1));
-            broadcast(new PeopleSeeingMeeting($meet))->toOthers();
+            broadcast(new PeopleSeeingMeeting($meet));
             return redirect()->route('board', ['invite_code' => $code->code,'meet_id'=> $meet->id]);
         }catch (\Exception $e){
             return redirect()->route('home')->with(['message' => "Asegurese de completar todos los campos requeridos"]);
@@ -62,12 +60,21 @@ class MeetController extends Controller
             if($canJoin && $exist)
             {
 
+                $participationController = new ParticipacionController();
+                $isHost = $participationController->isHost($meet);
+                $isGuest = $participationController->isGuest($meet);
+
+
                 $backupController = new BackupController();
                 $backup = $backupController->getIdByMeetId($meet->id);
                 $json = $backup->backup;
 
-                event(new UserMeetAccess($meet, Auth::user(),2));
-                broadcast(new PeopleSeeingMeeting($meet))->toOthers();
+                if(!$isHost && !$isGuest ){
+                    event(new UserMeetAccess($meet, Auth::user(),2));
+                }else{
+                    $participationController->addUserEntries($meet);
+                }
+                broadcast(new PeopleSeeingMeeting($meet));
 
                 if($json === Null){
                     return redirect()->route('board',['invite_code'=> $request->invite_code,'meet_id'=> $meet->id, 'json'=>$json]) ;
@@ -76,7 +83,7 @@ class MeetController extends Controller
 
             }
         }catch (\Exception $e){
-            return redirect()->route('home')->with('message','El codigo de invitacion ya no esta disponible o no existe.');
+            return redirect()->route('home')->with('message',$e->getTraceAsString());
         }
     }
 

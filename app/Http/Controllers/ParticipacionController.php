@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Participacion;
+use App\Participation;
+use App\UserMeet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ParticipacionController extends Controller
 {
@@ -56,37 +59,33 @@ class ParticipacionController extends Controller
         return view('particiaciones.show',['participacion'=>$participacion]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * This function returns true if the authenticated user is the host
+     * of the given meet
+     * @param $meet
+     * @return boolean
      */
-    public function update(Request $request, $id)
+    public function isHost($meet): bool
     {
-        //
+        $query = UserMeet::where([['meet_id', $meet->id],['user_id', Auth::user()->id]])->first();
+        return $query != null && $query->participation_type_id == 1;
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function isGuest($meet): bool
     {
-        //
+        $query = UserMeet::where([['meet_id', $meet->id],['user_id', Auth::user()->id]])->first();
+        return $query != null && $query->participation_type_id == 2;
     }
+
+    public function addUserEntries($meet){
+        $query = UserMeet::where([['meet_id', $meet->id],['user_id', Auth::user()->id]])->first();
+        $query->entriesQty++ ;
+        $query->save();
+//        return dd($query);
+
+    }
+
+
 }
