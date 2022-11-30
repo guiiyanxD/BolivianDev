@@ -41,8 +41,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
      wsPort: 6001,
      forceTLS: false,
      disableStats: true,
-     encrypted: true,
-     authEndpoint: '/broadcasting/auth',
+     encrypted: false,
+     scheme: process.env.MIX_PUSHER_SCHEME,
+     // authEndpoint: '/broadcasting/auth',
+     // enabledTransports: ['ws'],
+     // disabledTransports: ['sockjs', 'xhr_polling', 'xhr_streaming'],
      auth: {
          headers: {
              'X-CSRF-TOKEN': '{{ csrf_token() }}',
