@@ -11,19 +11,20 @@
     let myjoint = new MyJointIndex();
     const meetID = {{$meet_id}};
 
-    myjoint.paper.on(' change:position ', function(){
+    myjoint.paper.on(' change:position cell:pointerup', function(){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
-        console.log( "change position" );
+        // console.log( "change position" );
         updateFromJson();
     });
 
 
 
-    myjoint.paper.on(' cell:pointerup', function () {
+/*    myjoint.paper.on(' cell:pointerup', function () {
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
-        console.log( "veremos " );
+        // console.log( "veremos " );
         // updateFromJson();
     });
+*/
 
     myjoint.paper.on('cell:pointerup', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
