@@ -4,7 +4,7 @@
    <div class="navbar" style="background-color: #36382e">
         <div class="align-items-baseline text-white">
             <h5 style="color: #DADAD9"> Codigo de invitacion: {{ $invite_code }} | Personas en la sesion: <span id="online"> </span> |
-                <a class="btn btn-dark" {{--href="{{route('backup.update')}}"--}} onclick="getJson()" >Terminar sesion</a>
+                {{--<a class="btn btn-dark" --}}{{--href="{{route('backup.update')}}"--}}{{-- onclick="getJson()" >Terminar sesion</a>--}}
                 | {{'meetID: '. $meet_id}}
             </h5>
 
