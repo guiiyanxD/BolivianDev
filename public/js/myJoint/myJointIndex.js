@@ -119,13 +119,13 @@ class MyJointIndex{
                                 ry: 2,
                                 width: 50,
                                 height: 30,
-                                fill: '#000000',
+                                fill: 'transparent',
                                 stroke: '#31d0c6',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
                             label: {
-                                text: 'rect',
+                                text: '',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
@@ -146,13 +146,13 @@ class MyJointIndex{
                             body: {
                                 width: 50,
                                 height: 30,
-                                fill: '#000000',
+                                fill: 'transparent',
                                 stroke: '#31d0c6',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
                             label: {
-                                text: 'ellipse',
+                                text: ' ',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
@@ -172,13 +172,13 @@ class MyJointIndex{
                             },
                             body: {
                                 points: 'calc(0.5 * w),0 calc(w),calc(0.5 * h) calc(0.5 * w),calc(h) 0,calc(0.5 * h)',
-                                fill: '#000000',
+                                fill: 'transparent',
                                 stroke: '#31d0c6',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
                             label: {
-                                text: 'rhombus',
+                                text: ' ',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
@@ -197,19 +197,19 @@ class MyJointIndex{
                                 dataTooltipPositionSelector: '.joint-stencil'
                             },
                             body: {
-                                fill: '#000000',
+                                fill: 'transparent',
                                 stroke: '#31d0c6',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
                             top: {
-                                fill: '#31d0c6',
+                                fill: 'transparent',
                                 stroke: '#31d0c6',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
                             label: {
-                                text: 'cylinder',
+                                text: ' ',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
@@ -235,14 +235,14 @@ class MyJointIndex{
                             },
                             header: {
                                 stroke: '#31d0c6',
-                                fill: '#31d0c6',
+                                fill: 'transparent',
                                 strokeWidth: 2,
                                 strokeDasharray: '0',
                                 height: 20
                             },
                             bodyText: {
                                 textWrap: {
-                                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie.',
+                                    text: ' ',
                                     width: -10,
                                     height: -20,
                                     ellipsis: true
@@ -255,7 +255,7 @@ class MyJointIndex{
                                 refY2: 12,
                             },
                             headerText: {
-                                text: 'header',
+                                text: ' ',
                                 fill: '#f6f6f6',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
