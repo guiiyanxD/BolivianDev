@@ -120,7 +120,7 @@ class MyJointIndex{
                                 width: 50,
                                 height: 30,
                                 fill: 'transparent',
-                                stroke: '#31d0c6',
+                                stroke: '#5BC3EB',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
@@ -147,7 +147,7 @@ class MyJointIndex{
                                 width: 50,
                                 height: 30,
                                 fill: 'transparent',
-                                stroke: '#31d0c6',
+                                stroke: '#5BC3EB',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
@@ -173,7 +173,7 @@ class MyJointIndex{
                             body: {
                                 points: 'calc(0.5 * w),0 calc(w),calc(0.5 * h) calc(0.5 * w),calc(h) 0,calc(0.5 * h)',
                                 fill: 'transparent',
-                                stroke: '#31d0c6',
+                                stroke: '#5BC3EB',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
@@ -198,13 +198,13 @@ class MyJointIndex{
                             },
                             body: {
                                 fill: 'transparent',
-                                stroke: '#31d0c6',
+                                stroke: '#5BC3EB',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
                             top: {
                                 fill: 'transparent',
-                                stroke: '#31d0c6',
+                                stroke: '#5BC3EB',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
@@ -229,12 +229,12 @@ class MyJointIndex{
                             },
                             body: {
                                 fill: 'transparent',
-                                stroke: '#31d0c6',
+                                stroke: '#5BC3EB',
                                 strokeWidth: 2,
                                 strokeDasharray: '0'
                             },
                             header: {
-                                stroke: '#31d0c6',
+                                stroke: '#5BC3EB',
                                 fill: 'transparent',
                                 strokeWidth: 2,
                                 strokeDasharray: '0',
