@@ -253,6 +253,7 @@ class MyJointIndex{
                                 fontSize: 11,
                                 strokeWidth: 0,
                                 refY2: 12,
+                                textAlignment:"bottom",
                             },
                             headerText: {
                                 text: ' ',
