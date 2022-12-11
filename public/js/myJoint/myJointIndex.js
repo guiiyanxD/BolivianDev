@@ -307,7 +307,7 @@ class MyJointIndex{
                                 'ref-x': null,
                                 'ref-y': null,
                                 'y-alignment': null,
-                                'xlink:href': 'assets/user-member.png',
+                                'xlink:href': 'assets/member-male.png',
                             }
                         }
                     }
