@@ -7,23 +7,22 @@
 <script src=" {{ asset('backbone/backbone.js')}} "></script>
 <script src=" {{ asset('Jointjs/dist/rappid.js')}} "></script>
 <script src=" {{ asset('js/myJoint/myJointIndex.js') }} "></script>
-
 @if(isset($json))
     <script>
-        let counter = 1;
         let json = JSON.parse( {!! json_encode($json) !!} );
         json = JSON.stringify(json);
-
     </script>
 @endif
+
 <script>
     let myjoint = new MyJointIndex();
     const meetID = {{$meet_id}};
 
-    if(json != null && counter > 0){
+
+    // console.log( typeof json === 'undefined');
+    if( typeof json !== 'undefined'){
         console.log(json);
         myjoint.graph = myjoint.graph.fromJSON(JSON.parse( (json) ));
-        counter = 0;
     }
 
     myjoint.graph.on('add', function(){
