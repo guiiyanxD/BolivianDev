@@ -11,7 +11,7 @@
     let myjoint = new MyJointIndex();
     const meetID = {{$meet_id}};
 
-    myjoint.paper.on('change:position', function(){
+    myjoint.graph.on('change', function(){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         // console.log( "change position" );
         updateFromJson();
@@ -22,10 +22,10 @@
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
     })
 
-    myjoint.paper.on('change:attrs', function(){
+    /*myjoint.paper.on('change:attrs', function(){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
-    });
+    });*/
 
     myjoint.paper.on('element:add', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );

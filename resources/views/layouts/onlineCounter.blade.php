@@ -7,13 +7,13 @@
 
 
     function update_online_counter() {
-        console.log("update online counter");
+        // console.log("update online counter");
         document.getElementById('online').textContent = '' + onlineUsers;
     }
 
     Echo.join('meet.' + meetId )
         .here((users) => {
-            console.log(users);
+            // console.log(users);
             onlineUsers = users.length;
             update_online_counter();
         })
