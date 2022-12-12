@@ -39,7 +39,7 @@
 
     });
 
-    myjoint.graph.on('change:attrs', ()=>{
+    myjoint.paper.on('cell:pointerup change:attrs', ()=>{
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
         // console.log('se editaron atributos de: '+ JSON.stringify(cellView));
