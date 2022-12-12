@@ -13,7 +13,7 @@ class MyJointIndex{
     }
 
     intiPaper(){
-        joint.setTheme('dark');
+        joint.setTheme('modern');
         let graph = this.graph = new joint.dia.Graph;
 
         this.commandManager = new joint.dia.CommandManager({ graph: graph });
@@ -43,7 +43,7 @@ class MyJointIndex{
         document.getElementById('paper').append(paperScroller.el);
         paperScroller.render();
 
-        paper.on('paper:pan', (evt, tx, ty) => {
+        /*paper.on('paper:pan', (evt, tx, ty) => {
             evt.preventDefault();
             paperScroller.el.scrollLeft += tx;
             paperScroller.el.scrollTop += ty;
@@ -53,7 +53,7 @@ class MyJointIndex{
             // the default is already prevented
             const zoom = paperScroller.zoom();
             paperScroller.zoom(zoom * scale, { min: 0.2, max: 5, ox, oy, absolute: true });
-        });
+        });*/
     }
     initializeStencil() {
 
