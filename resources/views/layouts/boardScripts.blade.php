@@ -21,50 +21,52 @@
 
     // console.log( typeof json === 'undefined');
     if( typeof json !== 'undefined'){
-        console.log(json);
+        // console.log(json);
         myjoint.graph = myjoint.graph.fromJSON(JSON.parse( (json) ));
     }
 
     myjoint.graph.on('add', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
-        console.log('seanadio un elemento');
+        // console.log('seanadio un elemento');
 
     });
 
     myjoint.graph.on('remove', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
-        console.log('se elimino un elemento');
+        // console.log('se elimino un elemento');
 
     });
 
-    myjoint.graph.on('change:attrs', ( )=>{
+    myjoint.graph.on('change:attrs', ( cellView)=>{
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
-        console.log('se editaron atributos de: ');
+        // console.log('se editaron atributos de: '+ JSON.stringify(cellView));
     });
 
-    myjoint.graph.on(' change:size ', ()=>{
 
+    myjoint.paper.on('cell:pointerup change:size ', ()=>{
+        // console.log('se cambio el tamano de: ');
+        //
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
 
         updateFromJson();
-        console.log('se cambio el tamano de: ');
+        // console.log('se cambio el tamano de: ');
 
     });
 
     myjoint.graph.on('change:z', ()=>{
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
-        console.log("se cambio el z")
+        // console.log("se cambio el z")
     });
 
 
     myjoint.paper.on('cell:pointerup change:position', function(cellView){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
-        console.log( 'cellView>'+ cellView+ 'se movio un elemento ');
+        // console.log( 'cellView>'+ cellView+ 'se movio un elemento ');
     })
 
 
