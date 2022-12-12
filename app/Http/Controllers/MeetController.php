@@ -76,7 +76,7 @@ class MeetController extends Controller
                 }
                 broadcast(new PeopleSeeingMeeting($meet));
 
-                if($json === Null){
+                if($json != Null){
                     return redirect()->route('board',['invite_code'=> $request->invite_code,'meet_id'=> $meet->id, 'json'=>$json]) ;
                 }
                 return redirect()->route('board',['invite_code'=> $request->invite_code,'meet_id'=> $meet->id]) ;
