@@ -46,7 +46,7 @@
     });
 
 
-    myjoint.paper.on('cell:pointerup change:size ', ()=>{
+    /*myjoint.paper.on('cell:pointerup change:size ', ()=>{
         // console.log('se cambio el tamano de: ');
         //
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
@@ -54,7 +54,7 @@
         updateFromJson();
         // console.log('se cambio el tamano de: ');
 
-    });
+    });*/
 
     myjoint.graph.on('change:z', ()=>{
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
@@ -86,7 +86,7 @@
     }
 
     function updateFromJson(){
-        console.log("updateFromJson llego aqui");
+        // console.log("updateFromJson llego aqui");
         $.ajax({
             type:"post",
             url:"meet/backup/load",
