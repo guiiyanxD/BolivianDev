@@ -9,9 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Junges\InviteCodes\Http\Middlewares\ProtectedByInviteCodeMiddleware;
 use Junges\InviteCodes\InviteCodes;
-use function Sodium\increment;
 
 class InviteController extends Controller
 {
@@ -28,6 +26,10 @@ class InviteController extends Controller
         ///TODO:Verify if date is heigher or equal than now
         //$fecha = $fecha != null ? $this->verifyingDate($fecha) : null;
 
+
+
+//            return redirect()->route('home')->with(['message' => "Verifique que la fecha mayor a la de ahorita"]);
+//        return dd($fechaa);
 
         //no tiene limites
         if ($max == null && $fecha == null )
@@ -47,6 +49,7 @@ class InviteController extends Controller
         }
         else if($max == null && $fecha != null)
         {
+//            $fechaa = Carbon::parse($fecha)->endOfDay();
             $code = \Junges\InviteCodes\Facades\InviteCodes::create()
                 ->expiresAt($fecha)
                 ->save();

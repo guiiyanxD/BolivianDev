@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\PeopleSeeingMeeting;
 use App\Events\UserMeetAccess;
 use App\Meet;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,9 +20,13 @@ class MeetController extends Controller
      */
     public function storeAsHost(Request $request)
     {
+        $fecha = Carbon::parse($request->fecha)->endOfDay();
+
         try {
-            $inviteController = new InviteController();
-            $code = $inviteController->store($request->max, $request->fecha);
+            if($fecha > now()){
+                $inviteController = new InviteController();
+                $code = $inviteController->store($request->max, $fecha);
+            }
 
             $backupController = new BackupController();
             $bakcup = $backupController->store();
@@ -83,7 +88,7 @@ class MeetController extends Controller
 
             }
         }catch (\Exception $e){
-            return redirect()->route('home')->with('message',$e->getTraceAsString());
+            return redirect()->route('home')->with('message',"Al parecer ha habido un error con tu codigo de invitación.");
         }
     }
 
