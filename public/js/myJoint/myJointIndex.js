@@ -70,11 +70,11 @@ class MyJointIndex{
             // groups: myStencil['myStencilGroups'],
             groups: {
                 standard: { index: 1, label: 'Standard shapes' },
-                fsa: { index: 2, label: 'State machine' },
-                pn: { index: 3, label: 'Petri nets' },
+                // fsa: { index: 2, label: 'State machine' },
+                // pn: { index: 5, label: 'Petri nets' },
                 erd: { index: 4, label: 'Entity-relationship' },
-                uml: { index: 5, label: 'UML' },
-                org: { index: 6, label: 'ORG' },
+                uml: { index: 3, label: 'UML' },
+                org: { index: 2, label: 'ORG' },
             },
             dropAnimation: true,
             groupsToggleButtons: true,
@@ -280,7 +280,7 @@ class MyJointIndex{
                     }
 
                 ],
-                fsa: [
+                org: [
                     {
                         type: 'org.Member',
                         size: { width: 90, height: 35 },
@@ -874,7 +874,7 @@ class MyJointIndex{
                     }
                 ],
 
-                org: [
+                /*org: [
 
                     {
                         type: 'org.Member',
@@ -920,6 +920,7 @@ class MyJointIndex{
                         }
                     }
                 ],
+                */
             }
         );
 
@@ -5202,7 +5203,7 @@ class MyJointIndex{
                         }
                     }
                 },
-                {
+                /*{
                     type: 'button',
                     name: 'print',
                     group: 'print',
@@ -5214,7 +5215,7 @@ class MyJointIndex{
                             'data-tooltip-position-selector': '.toolbar-container'
                         }
                     }
-                },
+                },*/
                 {
                     type: 'button',
                     name: 'to-front',
@@ -5243,6 +5244,7 @@ class MyJointIndex{
                         }
                     }
                 },
+                /*
                 {
                     type: 'button',
                     group: 'layout',
@@ -5256,6 +5258,7 @@ class MyJointIndex{
                         }
                     }
                 },
+
                 {
                     type: 'zoom-to-fit',
                     name: 'zoom-to-fit',
@@ -5303,6 +5306,7 @@ class MyJointIndex{
                         }
                     }
                 },
+                */
                 {
                     type: 'separator',
                     group: 'grid'
@@ -5334,6 +5338,7 @@ class MyJointIndex{
                     type: 'separator',
                     group: 'snapline'
                 },
+                /*
                 {
                     type: 'checkbox',
                     name: 'snapline',
@@ -5351,6 +5356,7 @@ class MyJointIndex{
                         }
                     }
                 },
+
                 {
                     type: 'fullscreen',
                     name: 'fullscreen',
@@ -5363,6 +5369,8 @@ class MyJointIndex{
                         }
                     }
                 }
+
+                 */
             ],
             references: {
                 paperScroller: this.paperScroller,
@@ -5375,10 +5383,10 @@ class MyJointIndex{
             'png:pointerclick': this.openAsPNG.bind(this),
             'to-front:pointerclick': this.applyOnSelection.bind(this, 'toFront'),
             'to-back:pointerclick': this.applyOnSelection.bind(this, 'toBack'),
-            'layout:pointerclick': this.layoutDirectedGraph.bind(this),
+            // 'layout:pointerclick': this.layoutDirectedGraph.bind(this),
             'snapline:change': this.changeSnapLines.bind(this),
             'clear:pointerclick': this.graph.clear.bind(this.graph),
-            'print:pointerclick': this.paper.print.bind(this.paper),
+            // 'print:pointerclick': this.paper.print.bind(this.paper),
             'grid-size:change': this.paper.setGridSize.bind(this.paper)
         });
 
@@ -5397,10 +5405,6 @@ class MyJointIndex{
         } else {
             this.snaplines.disable();
         }
-    }
-    // exportStylesheet: '.scalable * { vector-effect: non-scaling-stroke }',
-    exportStylesheet(){
-        // return '.scalable * { vector-effect: non-scaling-stroke }';
     }
     initializeTooltips() {
 
