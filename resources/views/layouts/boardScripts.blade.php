@@ -39,7 +39,7 @@
 
     });
 
-    myjoint.graph.on('change:attrs', ( cellView)=>{
+    myjoint.graph.on('change:attrs', ()=>{
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
         // console.log('se editaron atributos de: '+ JSON.stringify(cellView));
@@ -63,7 +63,7 @@
     });
 
 
-    myjoint.paper.on('change:position cell:pointerup ', function(cellView){
+    myjoint.graph.on('change:position', function(){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
         // console.log( 'cellView>'+ cellView+ 'se movio un elemento ');
