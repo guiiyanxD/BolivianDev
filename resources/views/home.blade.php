@@ -97,11 +97,13 @@
                             <strong>Fecha de expiracion:</strong> {{$meet->meets->invite->expires_at}}
                         </p>
 
-                        <div>
-                            <a class="btn btn-info" href="{{route('invite.edit', [$meet->meets->id, $meet->meets->invite->id])}}">
-                                Editar
-                            </a>
-                        </div>
+                        @if($meet->participation_type_id == 1)
+                            <div>
+                                <a class="btn btn-info" href="{{route('invite.edit', [$meet->meets->id, $meet->meets->invite->id])}}">
+                                    Editar
+                                </a>
+                            </div>
+                        @endif
                         <hr>
                     @endforeach
                     </div>

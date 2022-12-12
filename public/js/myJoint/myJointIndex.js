@@ -122,15 +122,17 @@ class MyJointIndex{
                                 fill: 'transparent',
                                 stroke: '#5BC3EB',
                                 strokeWidth: 2,
-                                strokeDasharray: '0'
+                                strokeDasharray: '0',
                             },
                             label: {
-                                text: '',
+                                text: 'Rectangle',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
                                 fontSize: 11,
-                                strokeWidth: 0
+                                strokeWidth: 0,
+                                'ref-y': '55%',
+                                refY2:5,
                             }
                         }
                     },
@@ -152,16 +154,18 @@ class MyJointIndex{
                                 strokeDasharray: '0'
                             },
                             label: {
-                                text: ' ',
+                                text: 'Ellipse ',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
                                 fontSize: 11,
-                                strokeWidth: 0
+                                strokeWidth: 0,
+                                'ref-y': '55%',
+                                refY2:5,
                             }
                         }
                     },
-                    {
+                    /* {
                         type: 'standard.Polygon',
                         size: { width: 90, height: 54 },
                         attrs: {
@@ -178,15 +182,19 @@ class MyJointIndex{
                                 strokeDasharray: '0'
                             },
                             label: {
-                                text: ' ',
+                                text: 'Rhombus',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
                                 fontSize: 11,
-                                strokeWidth: 0
+                                strokeWidth: 0,
+                                'ref-y': '55%',
+                                refY2:5,
                             }
                         }
                     },
+
+                     */
                     {
                         type: 'standard.Cylinder',
                         size: { width: 90, height: 54 },
@@ -200,7 +208,8 @@ class MyJointIndex{
                                 fill: 'transparent',
                                 stroke: '#5BC3EB',
                                 strokeWidth: 2,
-                                strokeDasharray: '0'
+                                strokeDasharray: '0',
+
                             },
                             top: {
                                 fill: 'transparent',
@@ -209,12 +218,14 @@ class MyJointIndex{
                                 strokeDasharray: '0'
                             },
                             label: {
-                                text: ' ',
+                                text: 'Cylinder',
                                 fill: '#c6c7e2',
                                 fontFamily: 'Roboto Condensed',
                                 fontWeight: 'Normal',
                                 fontSize: 11,
-                                strokeWidth: 0
+                                strokeWidth: 0,
+                                /*'ref-y': '55%',
+                                refY2:5,*/
                             }
                         }
                     },
@@ -242,7 +253,7 @@ class MyJointIndex{
                             },
                             bodyText: {
                                 textWrap: {
-                                    text: ' ',
+                                    text: ' Headered Rectangle ',
                                     width: -10,
                                     height: -20,
                                     ellipsis: true
@@ -252,6 +263,7 @@ class MyJointIndex{
                                 fontWeight: 'Normal',
                                 fontSize: 11,
                                 strokeWidth: 0,
+                                'ref-y': '55%',
                                 refY2: 12,
                                 textAlignment:"bottom",
                             },
@@ -5162,7 +5174,7 @@ class MyJointIndex{
                         }
                     }
                 },
-                /*{
+                {
                     type: 'button',
                     name: 'svg',
                     group: 'export',
@@ -5189,7 +5201,7 @@ class MyJointIndex{
                             'data-tooltip-position-selector': '.toolbar-container'
                         }
                     }
-                },*/
+                },
                 {
                     type: 'button',
                     name: 'print',
@@ -5387,6 +5399,9 @@ class MyJointIndex{
         }
     }
     // exportStylesheet: '.scalable * { vector-effect: non-scaling-stroke }',
+    exportStylesheet(){
+        // return '.scalable * { vector-effect: non-scaling-stroke }';
+    }
     initializeTooltips() {
 
         new joint.ui.Tooltip({
@@ -5399,35 +5414,27 @@ class MyJointIndex{
     }
     openAsSVG() {
 
-        var paper = this.paper;
-        paper.hideTools().toSVG(function(svg) {
-            new joint.ui.Lightbox({
-                image: 'data:image/svg+xml,' + encodeURIComponent(svg),
-                downloadable: true,
-                fileName: 'Rappid'
-            }).open();
-            paper.showTools();
-        }, {
-            preserveDimensions: true,
-            convertImagesToDataUris: true,
-            useComputedStyles: false,
-            stylesheet: this.exportStylesheet
-        });
+        var svgDoc = this.paper.svg;
+        var serializer = new XMLSerializer();
+        var svgString = serializer.serializeToString(svgDoc);
+
+        const link = document.createElement("a");
+        link.href = 'data:image/svg+xml,' + encodeURIComponent(svgString);
+        link.setAttribute("download", 'fileName.svg');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
     openAsPNG() {
 
-        var paper = this.paper;
-        paper.hideTools().toPNG(function(dataURL) {
-            new joint.ui.Lightbox({
-                image: dataURL,
-                downloadable: true,
-                fileName: 'Rappid'
-            }).open();
-            paper.showTools();
-        }, {
-            padding: 10,
-            useComputedStyles: false,
-            stylesheet: this.exportStylesheet
+        this.paper.hideTools().toPNG(function (dataURI) {
+            const link = document.createElement("a");
+            link.href = dataURI;
+            link.setAttribute("download", 'fileName.png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
         });
     }
     layoutDirectedGraph() {

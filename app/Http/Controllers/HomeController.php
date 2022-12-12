@@ -26,6 +26,7 @@ class HomeController extends Controller
     {
         $userMeetController = new UserMeetController();
         $meets = $userMeetController->getMeetsByUser();
+//        return dd($meets);
         return view('home', ['meets'=> $meets]);
     }
 }
