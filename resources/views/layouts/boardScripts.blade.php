@@ -10,32 +10,62 @@
 <script>
     let myjoint = new MyJointIndex();
     const meetID = {{$meet_id}};
+    var SizeEvt = [];
 
-    myjoint.graph.on('change', function(){
-        getJson(  JSON.stringify(myjoint.graph.toJSON()) );
+    /*myjoint.graph.on('  change:position', function(element, position){
+        // getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         // console.log( "change position" );
-        updateFromJson();
-    });
+        // updateFromJson();
+        // console.log('Element ' + element.id + 'moved to ' + position.x + ',' + position.y);
 
-
-    myjoint.paper.on('cell:pointerup', function(){
-        getJson( JSON.stringify(myjoint.graph.toJSON()) );
-    })
-
-    /*myjoint.paper.on('change:attrs', function(){
-        getJson(  JSON.stringify(myjoint.graph.toJSON()) );
-        updateFromJson();
     });*/
 
-    myjoint.paper.on('element:add', function(){
-        getJson( JSON.stringify(myjoint.graph.toJSON()) );
+    myjoint.graph.on('change:attrs', (cellView, opt)=>{
+        getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
+        console.log('se editaron atributos de: '+ cellView);
+    });
+
+    myjoint.graph.on('change:size', (cellView, opt, evt)=>{
+        // var array = [];
+        // SizeEvt.push(evt);
+        setInterval(function () {}, 500);
+
+        getJson(  JSON.stringify(myjoint.graph.toJSON()) );
+        updateFromJson();
+        console.log('se cambio el tamano de: '+ JSON.stringify(opt));
+        // console.log('array: '+ JSON.stringify(SizeEvt.pop()));
+        // SizeEvt = [];
+        // console.log('array vacio?: '+ JSON.stringify(SizeEvt.pop()));
 
     });
 
-    myjoint.paper.on('element:remove', function(){
+    myjoint.graph.on('change:z', (cell, opt)=>{
+        getJson(  JSON.stringify(myjoint.graph.toJSON()) );
+        updateFromJson();
+        console.log("se cambio el z")
+    });
+
+
+    myjoint.paper.on('cell:pointerup change:position', function(cellView){
+        getJson(  JSON.stringify(myjoint.graph.toJSON()) );
+        updateFromJson();
+        console.log( 'cellView>'+ cellView+ 'se movio un elemento ');
+    })
+
+
+    myjoint.graph.on('add', function(){
         getJson( JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
+        console.log('seanadio un elemento');
+
+    });
+
+    myjoint.graph.on('remove', function(){
+        getJson( JSON.stringify(myjoint.graph.toJSON()) );
+        updateFromJson();
+        console.log('se elimino un elemento');
+
     });
 
     function getJson($jsonPar){
@@ -76,7 +106,7 @@
 
     function reLoadGarphFromJson(data){
 
-        console.log("reloadFromJson" + data);
+        // console.log("reloadFromJson" + data);
         myjoint.graph.fromJSON(JSON.parse( (data) ));
     }
 
