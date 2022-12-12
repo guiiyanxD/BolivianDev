@@ -63,7 +63,7 @@
     });
 
 
-    myjoint.graph.on('change:position', function(){
+    myjoint.paper.on('cell:pointerup change:position', function(){
         getJson(  JSON.stringify(myjoint.graph.toJSON()) );
         updateFromJson();
         // console.log( 'cellView>'+ cellView+ 'se movio un elemento ');
