@@ -22,29 +22,34 @@ class MeetController extends Controller
     {
         $fecha = Carbon::parse($request->fecha)->endOfDay();
 
-        try {
+//        try {
             if($fecha > now()){
                 $inviteController = new InviteController();
                 $code = $inviteController->store($request->max, $fecha);
+                $backupController = new BackupController();
+                $bakcup = $backupController->store();
+
+
+                $meet = Meet::create([
+                    'invite_id' => $code->id,
+                    'backup_id' => $bakcup->id,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                ]);
+
+                event(new UserMeetAccess($meet, Auth::user(), 1));
+                broadcast(new PeopleSeeingMeeting($meet));
+                return redirect()->route('board', ['invite_code' => $code->code,'meet_id'=> $meet->id]);
+            }else{
+                return redirect()->route('home')->with(['message' => "Asegurese de completar todos los campos requeridos"]);
+
             }
 
-            $backupController = new BackupController();
-            $bakcup = $backupController->store();
-
-
-            $meet = Meet::create([
-                'invite_id' => $code->id,
-                'backup_id' => $bakcup->id,
-                'name' => $request->name,
-                'description' => $request->description,
-            ]);
-
-            event(new UserMeetAccess($meet, Auth::user(), 1));
-            broadcast(new PeopleSeeingMeeting($meet));
-            return redirect()->route('board', ['invite_code' => $code->code,'meet_id'=> $meet->id]);
+        /*
         }catch (\Exception $e){
+            return redirect()->route('home')->with(['message' => $e]);
             return redirect()->route('home')->with(['message' => "Asegurese de completar todos los campos requeridos"]);
-        }
+        }*/
     }
 
     /**
