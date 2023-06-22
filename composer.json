@@ -18,7 +18,8 @@
         "laravel/ui": "^2.4",
         "mateusjunges/laravel-invite-codes": "^1.4",
         "pusher/pusher-php-server": "~4.0",
-        "fakerphp/faker": "^1.9.1"
+        "fakerphp/faker": "^1.9.1",
+        "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
