@@ -36,15 +36,16 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  window.Echo = new Echo({
      broadcaster: 'pusher',
      key: process.env.MIX_PUSHER_APP_KEY,
-     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-     wsHost: process.env.MIX_PUSHER_HOST,
+     wsHost: window.location.hostname,
      wsPort: 6001,
      forceTLS: false,
      disableStats: true,
-     encrypted: false,
-     scheme: process.env.MIX_PUSHER_SCHEME,
+
+     // cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+     // encrypted: false,
+     //scheme: process.env.MIX_PUSHER_SCHEME,
      // authEndpoint: '/broadcasting/auth',
-     // enabledTransports: ['ws'],
+     //enabledTransports: ['ws','wss'],
      // disabledTransports: ['sockjs', 'xhr_polling', 'xhr_streaming'],
      auth: {
          headers: {

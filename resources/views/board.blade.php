@@ -21,7 +21,7 @@
            <div class="col-lg-8 px-0" id="paper">
            </div>
 
-           <div class="col-lg-2 px-0" id="inspector">
+           <div class="col-lg-2 px-0" id="inspector" style="background-color:#6a6c8a">
            </div>
             <div class="col-lg-2 px-0" id="stencil">
             </div>

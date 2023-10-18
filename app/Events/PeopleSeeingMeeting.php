@@ -33,7 +33,7 @@ class PeopleSeeingMeeting implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('meet'. $this->meet->id);
+        return new PresenceChannel('meet.'. $this->meet->id);
     }
 
     /*

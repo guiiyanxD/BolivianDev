@@ -23,6 +23,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/jsuml', function(){
+    return view('jsuml');
+});
+
 Route::middleware(['auth'])->group(function() {
     Route::resource('/invitation', '\App\Http\Controllers\InviteController')->only(['index', 'create', 'store','will']);
     Route::resource('/tipo-participacion', '\App\Http\Controllers\ParticipacionController');
@@ -72,8 +76,8 @@ Route::middleware(['auth'])->group(function() {
 Auth::routes();
 Broadcast::routes();
 
-Route::any('/test', function(){
+/*Route::any('/test', function(){
    broadcast( new Test());
-});
+});*/
 //require __DIR__.'/auth.php';
 

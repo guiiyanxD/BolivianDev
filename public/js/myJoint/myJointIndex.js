@@ -15,18 +15,75 @@ class MyJointIndex{
     intiPaper(){
         joint.setTheme('modern');
         let graph = this.graph = new joint.dia.Graph;
-
+        joint.dia.Element.define('sequence.LifeLine',{
+            attrs: {
+                body: {
+                    refWidth: '100%',
+                    refHeight: '100%',
+                    strokeWidth: 2,
+                    stroke: '#000000',
+                    fill: '#FFFFFF',
+                                    },
+                label: {
+                    textVerticalAnchor: 'middle',
+                    textAnchor: 'middle',
+                    refX: '50%',
+                    refY: '0%',
+                    fontSize: 14,
+                    fill: '#333333'
+                }
+            }
+        },{
+            markup: [
+                    {
+                    tagName: 'rect',
+                    selector: 'body',
+                }, {
+                    tagName: 'text',
+                    selector: 'label'
+                    }
+                ]
+        });
+        joint.dia.Element.define('sequence.Activation',{
+            attrs: {
+                body: {
+                    refWidth: '100%',
+                    refHeight: '100%',
+                    strokeWidth: 2,
+                    stroke: '#D2D3D5',
+                    fill: '#D2D3D5',
+                },
+                label: {
+                    textVerticalAnchor: 'middle',
+                    textAnchor: 'middle',
+                    refX: '50%',
+                    refY: '100%',
+                    fontSize: 14,
+                    fill: '#333333'
+                }
+            }
+        },{
+            markup: [
+                {
+                    tagName: 'rect',
+                    selector: 'body',
+                }, {
+                    tagName: 'text',
+                    selector: 'label'
+                }
+            ]
+        });
         this.commandManager = new joint.dia.CommandManager({ graph: graph });
 
         let paper = this.paper = new joint.dia.Paper({
             width: 4000,
-            height: screen.height,
+            height: screen.height * 0.90,
             gridSize: 10,
             drawGrid: true,
             model: graph,
-            defaultLink: new joint.shapes.standard.Link(),
+            defaultLink: new joint.shapes.standard.Link,
             // defaultConnectionPoint: joint.shapes.standard.Link.connectionPoint,
-            interactive: { linkMove: false },
+            interactive: { linkMove: true },
             async: true,
             // sorting: joint.dia.Paper.sorting.APPROX
         });
@@ -57,24 +114,19 @@ class MyJointIndex{
     }
     initializeStencil() {
 
-        // console.log(MyStencil.myStencilGroups);
-
-        // var myStencil = new MyStencil();
-
-
         let stencil = this.stencil = new joint.ui.Stencil({
             paper: this.paperScroller,
             snaplines: this.snaplines,
             scaleClones: true,
             width: 240,
-            // groups: myStencil['myStencilGroups'],
             groups: {
-                standard: { index: 1, label: 'Standard shapes' },
+                sequence:{index: 1, label:'Diagrama de Secuencia'},
+                org: { index: 2, label: 'Actor' },
+                uml: { index: 3, label: 'UML' },
+                standard: { index: 4, label: 'Formas' },
                 // fsa: { index: 2, label: 'State machine' },
                 // pn: { index: 5, label: 'Petri nets' },
-                erd: { index: 4, label: 'Entity-relationship' },
-                uml: { index: 3, label: 'UML' },
-                org: { index: 2, label: 'ORG' },
+                // erd: { index: 4, label: 'Entity-relationship' },
             },
             dropAnimation: true,
             groupsToggleButtons: true,
@@ -104,6 +156,7 @@ class MyJointIndex{
         //TODO: PONER LOS SHAPES EN OTRO DOCUEMNTO
         stencil.render().load(
             {
+
                 standard: [
                     {
                         type: 'standard.Rectangle',
@@ -291,23 +344,23 @@ class MyJointIndex{
                                 dataTooltipPositionSelector: '.joint-stencil'
                             },
                             '.rank': {
-                                text: 'Rank',
-                                fill: '#f6f6f6',
+                                text: 'Actor',
+                                fill: '#000000',
                                 'font-family': 'Roboto Condensed',
                                 'font-size': 12,
                                 'font-weight': 'Bold',
                                 'text-decoration': 'none'
                             },
                             '.name': {
-                                text: 'Person',
-                                fill: '#f6f6f6',
+                                text: 'Persona',
+                                fill: '#000000',
                                 'font-family': 'Roboto Condensed',
                                 'font-weight': 'Normal',
                                 'font-size': 10
                             },
                             '.card': {
-                                fill: '#31d0c6',
-                                stroke: 'transparent',
+                                fill: '#FFBD50',
+                                stroke: '#000000',
                                 'stroke-width': 0,
                                 'stroke-dasharray': '0'
                             },
@@ -386,8 +439,7 @@ class MyJointIndex{
                         }
                     }
                 ],
-
-                erd: [
+                /*erd: [
 
                     {
                         type: 'erd.Entity',
@@ -641,8 +693,7 @@ class MyJointIndex{
                             }
                         }
                     }
-                ],
-
+                ],*/
                 uml: [
 
                     {
@@ -873,54 +924,72 @@ class MyJointIndex{
                         }
                     }
                 ],
-
-                /*org: [
-
+                sequence:[
                     {
-                        type: 'org.Member',
-                        size: { width: 90, height: 35 },
+                        type:'sequence.LifeLine',
+                        size: { width: 90, height: 54 },
                         attrs: {
                             root: {
-                                dataTooltip: 'Member',
+                                dataTooltip: 'LifeLine',
                                 dataTooltipPosition: 'left',
                                 dataTooltipPositionSelector: '.joint-stencil'
                             },
-                            '.rank': {
-                                text: 'Rank',
-                                fill: '#f6f6f6',
-                                'font-family': 'Roboto Condensed',
-                                'font-size': 12,
-                                'font-weight': 'Bold',
-                                'text-decoration': 'none'
+                            body: {
+                                rx: 2,
+                                ry: 2,
+                                width: 50,
+                                height: 30,
+                                fill: 'transparent',
+                                stroke: '#5BC3EB',
+                                strokeWidth: 2,
+                                strokeDasharray: '0',
                             },
-                            '.name': {
-                                text: 'Person',
-                                fill: '#f6f6f6',
-                                'font-family': 'Roboto Condensed',
-                                'font-weight': 'Normal',
-                                'font-size': 10
-                            },
-                            '.card': {
-                                fill: '#31d0c6',
-                                stroke: 'transparent',
-                                'stroke-width': 0,
-                                'stroke-dasharray': '0'
-                            },
-                            image: {
-                                width: 32,
-                                height: 32,
-                                x: 16,
-                                y: 13,
-                                ref: null,
-                                'ref-x': null,
-                                'ref-y': null,
-                                'y-alignment': null,
-                                'xlink:href': 'assets/member-male.png'
+                            label: {
+                                text: 'Linea de Vida',
+                                fill: '#c6c7e2',
+                                fontFamily: 'Roboto Condensed',
+                                fontWeight: 'Normal',
+                                fontSize: 11,
+                                strokeWidth: 0,
+                                'ref-y': '55%',
+                                refY2:5,
                             }
+                        },
+
+                    },
+                    {
+                        type:'sequence.Activation',
+                        size: { width:15, height: 54 },
+                        attrs: {
+                            root: {
+                                dataTooltip: 'Activation',
+                                dataTooltipPosition: 'left',
+                                dataTooltipPositionSelector: '.joint-stencil'
+                            },
+                            body: {
+                                rx: 5,
+                                ry: 5,
+                                width: 15,
+                                height: 60,
+                                fill: '#00aa00aa',
+                                stroke: '#D2D3D5',
+                                strokeWidth: 2,
+                                strokeDasharray: '0',
+                            },
+                            label: {
+                                text: 'Activacion',
+                                fill: '#c6c7e2',
+                                fontFamily: 'Roboto Condensed',
+                                fontWeight: 'Normal',
+                                fontSize: 11,
+                                strokeWidth: 0,
+                                'ref-y': '55%',
+                                refY2:5,
+                            }
+
                         }
                     }
                 ],
-                */
             }
         );
 
@@ -1391,6 +1460,7 @@ class MyJointIndex{
                 { value: 'M 0 -3 -6 0 0 3 z', content: 'Small' },
                 { value: 'M 0 -5 -10 0 0 5 z', content: 'Medium' },
                 { value: 'M 0 -10 -15 0 0 10 z', content: 'Large' },
+                { value: 'M 2 2 L 13 13 M 2 13 L 13 2 z', content: 'End' },
             ],
 
             strokeWidth: [
@@ -1418,7 +1488,8 @@ class MyJointIndex{
                 { value: -30, content: 'Close to target' },
             ],
 
-            portMarkup: [{
+            portMarkup: [
+                {
                 value: [{
                     tagName: 'rect',
                     selector: 'portBody',
@@ -1451,7 +1522,7 @@ class MyJointIndex{
             }]
         };
         const inspectorShapes = {
-            'app.Link': {
+            'standard.Link': {
                 inputs: {
                     attrs: {
                         line: {
@@ -1634,6 +1705,106 @@ class MyJointIndex{
                 }
             },
             'standard.Rectangle': {
+                inputs: {
+                    attrs: {
+                        label: {
+                            text: {
+                                type: 'content-editable',
+                                html: false,
+                                label: 'Text',
+                                group: 'text',
+                                index: 1
+                            },
+                            fontSize: {
+                                type: 'range',
+                                min: 5,
+                                max: 80,
+                                unit: 'px',
+                                label: 'Font size',
+                                group: 'text',
+                                when: { ne: { 'attrs/label/text': '' }},
+                                index: 2
+                            },
+                            fontFamily: {
+                                type: 'select-box',
+                                options: options.fontFamily,
+                                label: 'Font family',
+                                group: 'text',
+                                when: { ne: { 'attrs/label/text': '' }},
+                                index: 3
+                            },
+                            fontWeight: {
+                                type: 'select-box',
+                                options: options.fontWeight,
+                                label: 'Font thickness',
+                                group: 'text',
+                                when: { ne: { 'attrs/label/text': '' }},
+                                index: 4
+                            },
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'text',
+                                when: { ne: { 'attrs/label/text': '' }},
+                                index: 5
+                            }
+                        },
+                        body: {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'presentation',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'presentation',
+                                index: 2
+                            },
+                            strokeWidth: {
+                                type: 'range',
+                                min: 0,
+                                max: 30,
+                                step: 1,
+                                defaultValue: 1,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'presentation',
+                                when: { ne: { 'attrs/body/stroke': 'transparent' }},
+                                index: 3
+                            },
+                            strokeDasharray: {
+                                type: 'select-box',
+                                options: options.strokeStyle,
+                                label: 'Outline style',
+                                group: 'presentation',
+                                when: {
+                                    and: [
+                                        { ne: { 'attrs/body/stroke': 'transparent' }},
+                                        { ne: { 'attrs/body/strokeWidth': 0 }}
+                                    ]
+                                },
+                                index: 4
+                            }
+                        }
+                    }
+                },
+                groups: {
+                    presentation: {
+                        label: 'Presentation',
+                        index: 1
+                    },
+                    text: {
+                        label: 'Text',
+                        index: 2
+                    }
+                }
+            },
+            'sequence.LifeLine': {
                 inputs: {
                     attrs: {
                         label: {
@@ -2078,6 +2249,947 @@ class MyJointIndex{
                     }
                 }
             },
+
+            'standard.HeaderedRectangle': {
+                inputs: {
+                    attrs: {
+                        bodyText: {
+                            textWrap: {
+                                text: {
+                                    type: 'content-editable',
+                                    label: 'Wrapped text',
+                                    group: 'text',
+                                    index: 1
+                                }
+                            },
+                            fontSize: {
+                                type: 'range',
+                                min: 5,
+                                max: 80,
+                                unit: 'px',
+                                label: 'Font size',
+                                group: 'text',
+                                when: { ne: { 'attrs/bodyText/text': '' }},
+                                index: 2
+                            },
+                            fontFamily: {
+                                type: 'select-box',
+                                options: options.fontFamily,
+                                label: 'Font family',
+                                group: 'text',
+                                when: { ne: { 'attrs/bodyText/text': '' }},
+                                index: 3
+                            },
+                            fontWeight: {
+                                type: 'select-box',
+                                options: options.fontWeight,
+                                label: 'Font thickness',
+                                group: 'text',
+                                when: { ne: { 'attrs/bodyText/text': '' }},
+                                index: 4
+                            },
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'text',
+                                when: { ne: { 'attrs/boduText/text': '' }},
+                                index: 5
+                            }
+                        },
+                        headerText: {
+                            text: {
+                                type: 'content-editable',
+                                label: 'Text',
+                                group: 'headerText',
+                                index: 1
+                            },
+                            fontSize: {
+                                type: 'range',
+                                min: 5,
+                                max: 80,
+                                unit: 'px',
+                                label: 'Font size',
+                                group: 'headerText',
+                                when: { ne: { 'attrs/headerText/text': '' }},
+                                index: 2
+                            },
+                            fontFamily: {
+                                type: 'select-box',
+                                options: options.fontFamily,
+                                label: 'Font family',
+                                group: 'headerText',
+                                when: { ne: { 'attrs/headerText/text': '' }},
+                                index: 3
+                            },
+                            fontWeight: {
+                                type: 'select-box',
+                                options: options.fontWeight,
+                                label: 'Font thickness',
+                                group: 'headerText',
+                                when: { ne: { 'attrs/headerText/text': '' }},
+                                index: 4
+                            },
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'headerText',
+                                when: { ne: { 'attrs/headerText/text': '' }},
+                                index: 5
+                            }
+                        },
+                        body: {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'presentation',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'presentation',
+                                index: 2
+                            },
+                            strokeWidth: {
+                                type: 'range',
+                                min: 0,
+                                max: 30,
+                                step: 1,
+                                defaultValue: 1,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'presentation',
+                                when: { ne: { 'attrs/body/stroke': 'transparent' }},
+                                index: 3
+                            },
+                            strokeDasharray: {
+                                type: 'select-box',
+                                options: options.strokeStyle,
+                                label: 'Outline style',
+                                group: 'presentation',
+                                when: {
+                                    and: [
+                                        { ne: { 'attrs/body/stroke': 'transparent' }},
+                                        { ne: { 'attrs/body/strokeWidth': 0 }}
+                                    ]
+                                },
+                                index: 4
+                            }
+                        },
+                        header: {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'header',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'header',
+                                index: 2
+                            },
+                            strokeWidth: {
+                                type: 'range',
+                                min: 0,
+                                max: 30,
+                                step: 1,
+                                defaultValue: 1,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'header',
+                                when: { ne: { 'attrs/header/stroke': 'transparent' }},
+                                index: 3
+                            },
+                            strokeDasharray: {
+                                type: 'select-box',
+                                options: options.strokeStyle,
+                                label: 'Outline style',
+                                group: 'header',
+                                when: {
+                                    and: [
+                                        { ne: { 'attrs/header/stroke': 'transparent' }},
+                                        { ne: { 'attrs/header/strokeWidth': 0 }}
+                                    ]
+                                },
+                                index: 4
+                            }
+                        }
+                    }
+                },
+                groups: {
+                    presentation: {
+                        label: 'Presentation',
+                        index: 1
+                    },
+                    text: {
+                        label: 'Text',
+                        index: 2
+                    },
+                    header: {
+                        label: 'Header',
+                        index: 3
+                    },
+                    headerText: {
+                        label: 'Header Text',
+                        index: 4
+                    }
+                }
+            },
+
+            'pn.Place': {
+                inputs: {
+                    attrs: {
+                        '.label': {
+                            text: {
+                                type: 'content-editable',
+                                label: 'Text',
+                                group: 'text',
+                                index: 1
+                            },
+                            'font-size': {
+                                type: 'range',
+                                min: 5,
+                                max: 80,
+                                unit: 'px',
+                                label: 'Font size',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 2
+                            },
+                            'font-family': {
+                                type: 'select-box',
+                                options: options.fontFamily,
+                                label: 'Font family',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 3
+                            },
+                            'font-weight': {
+                                type: 'select-box',
+                                options: options.fontWeight,
+                                label: 'Font thickness',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 4
+                            },
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 5
+                            }
+                        },
+                        '.root': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'presentation',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'presentation',
+                                index: 2
+                            },
+                            'stroke-width': {
+                                type: 'range',
+                                min: 0,
+                                max: 30,
+                                step: 1,
+                                defaultValue: 1,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'presentation',
+                                when: { ne: { 'attrs/.root/stroke': 'transparent' }},
+                                index: 3
+                            },
+                            'stroke-dasharray': {
+                                type: 'select-box',
+                                options: options.strokeStyle,
+                                label: 'Outline style',
+                                group: 'presentation',
+                                when: {
+                                    and: [
+                                        { ne: { 'attrs/.root/stroke': 'transparent' }},
+                                        { ne: { 'attrs/.root/stroke-width': 0 }}
+                                    ]
+                                },
+                                index: 4
+                            }
+                        }
+                    },
+                    tokens: {
+                        type: 'number',
+                        min: 1,
+                        max: 500,
+                        group: 'data',
+                        index: 1
+                    }
+                },
+                groups: {
+                    presentation: {
+                        label: 'Presentation',
+                        index: 2
+                    },
+                    text: {
+                        label: 'Text',
+                        index: 3
+                    },
+                    data: {
+                        label: 'Data',
+                        index: 1
+                    }
+                }
+            },
+            'pn.Transition': {
+                inputs: {
+                    attrs: {
+                        '.label': {
+                            text: {
+                                type: 'content-editable',
+                                label: 'Text',
+                                group: 'text',
+                                index: 1
+                            },
+                            'font-size': {
+                                type: 'range',
+                                min: 5,
+                                max: 80,
+                                unit: 'px',
+                                label: 'Font size',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 2
+                            },
+                            'font-family': {
+                                type: 'select-box',
+                                options: options.fontFamily,
+                                label: 'Font family',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 3
+                            },
+                            'font-weight': {
+                                type: 'select-box',
+                                options: options.fontWeight,
+                                label: 'Font thickness',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 4
+                            },
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'text',
+                                when: { ne: { 'attrs/.label/text': '' }},
+                                index: 5
+                            }
+                        },
+                        rect: {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'presentation',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'presentation',
+                                index: 2
+                            },
+                            'stroke-width': {
+                                type: 'range',
+                                min: 0,
+                                max: 30,
+                                step: 1,
+                                defaultValue: 1,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'presentation',
+                                when: { ne: { 'attrs/rect/stroke': 'transparent' }},
+                                index: 2
+                            },
+                            'stroke-dasharray': {
+                                type: 'select-box',
+                                options: options.strokeStyle,
+                                label: 'Outline style',
+                                group: 'presentation',
+                                when: {
+                                    and: [
+                                        { ne: { 'attrs/rect/stroke': 'transparent' }},
+                                        { ne: { 'attrs/rect/stroke-width': 0 }}
+                                    ]
+                                },
+                                index: 3
+                            }
+                        }
+                    }
+                },
+                groups: {
+                    presentation: {
+                        label: 'Presentation',
+                        index: 1
+                    },
+                    text: {
+                        label: 'Text',
+                        index: 2
+                    }
+                }
+            },
+            'uml.Class': {
+                inputs: {
+                    attrs: {
+                        '.uml-class-name-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'name',
+                                index: 4
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'name',
+                                index: 5
+                            }
+                        },
+                        '.uml-class-attrs-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'attributes',
+                                index: 4
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'attributes',
+                                index: 5
+                            }
+                        },
+                        '.uml-class-methods-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'methods',
+                                index: 4
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'methods',
+                                index: 5
+                            }
+                        }
+                    },
+                    name: {
+                        type: 'text',
+                        group: 'name',
+                        index: 1,
+                        label: 'Class name'
+                    },
+                    attributes: {
+                        type: 'list',
+                        item: {
+                            type: 'text'
+                        },
+                        group: 'attributes',
+                        index: 1,
+                        label: 'Attributes'
+                    },
+                    methods: {
+                        type: 'list',
+                        item: {
+                            type: 'text'
+                        },
+                        group: 'methods',
+                        index: 1,
+                        label: 'Methods'
+                    }
+                },
+                groups: {
+                    name: {
+                        label: 'Class name',
+                        index: 1
+                    },
+                    attributes: {
+                        label: 'Attributes',
+                        index: 2
+                    },
+                    methods: {
+                        label: 'Methods',
+                        index: 3
+                    }
+                }
+            },
+            'uml.Interface': {
+                inputs: {
+                    attrs: {
+                        '.uml-class-name-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'name',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'name',
+                                index: 2
+                            }
+                        },
+                        '.uml-class-attrs-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'attributes',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'attributes',
+                                index: 2
+                            }
+                        },
+                        '.uml-class-methods-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'methods',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'methods',
+                                index: 2
+                            }
+                        }
+                    },
+                    name: {
+                        type: 'text',
+                        group: 'name',
+                        index: 0,
+                        label: 'Interface name'
+                    },
+                    attributes: {
+                        type: 'list',
+                        item: {
+                            type: 'text'
+                        },
+                        group: 'attributes',
+                        index: 0,
+                        label: 'Attributes'
+                    },
+                    methods: {
+                        type: 'list',
+                        item: {
+                            type: 'text'
+                        },
+                        group: 'methods',
+                        index: 0,
+                        label: 'Methods'
+                    }
+                },
+                groups: {
+                    name: {
+                        label: 'Interface name',
+                        index: 1
+                    },
+                    attributes: {
+                        label: 'Attributes',
+                        index: 2
+                    },
+                    methods: {
+                        label: 'Methods',
+                        index: 3
+                    }
+                }
+            },
+            'uml.Abstract': {
+                inputs: {
+                    attrs: {
+                        '.uml-class-name-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'name',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'name',
+                                index: 2
+                            }
+                        },
+                        '.uml-class-attrs-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'attributes',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'attributes',
+                                index: 2
+                            }
+                        },
+                        '.uml-class-methods-rect': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'methods',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'methods',
+                                index: 2
+                            }
+                        }
+                    },
+                    name: {
+                        type: 'text',
+                        group: 'name',
+                        index: 0,
+                        label: 'Abstract class name'
+                    },
+                    attributes: {
+                        type: 'list',
+                        item: {
+                            type: 'text'
+                        },
+                        group: 'attributes',
+                        index: 0,
+                        label: 'Attributes'
+                    },
+                    methods: {
+                        type: 'list',
+                        item: {
+                            type: 'text'
+                        },
+                        group: 'methods',
+                        index: 0,
+                        label: 'Methods'
+                    }
+                },
+                groups: {
+                    name: {
+                        label: 'Abstract class name',
+                        index: 1
+                    },
+                    attributes: {
+                        label: 'Attributes Text',
+                        index: 2
+                    },
+                    methods: {
+                        label: 'Methods Text',
+                        index: 3
+                    }
+                }
+            },
+            'uml.State': {
+                inputs: {
+                    name: {
+                        group: 'text',
+                        index: 1,
+                        type: 'text'
+                    },
+                    events: {
+                        group: 'events',
+                        index: 1,
+                        type: 'list',
+                        item: {
+                            type: 'text'
+                        }
+                    },
+                    attrs: {
+                        '.uml-state-name': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'text',
+                                when: { ne: { 'name': '' }},
+                                index: 5
+                            }
+                        },
+                        '.uml-state-body': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'presentation',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'presentation',
+                                index: 2
+                            },
+                            'stroke-width': {
+                                type: 'range',
+                                min: 0,
+                                max: 30,
+                                step: 1,
+                                defaultValue: 1,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'presentation',
+                                when: { ne: { 'attrs/.uml-state-body/stroke': 'transparent' }},
+                                index: 4
+                            },
+                            'stroke-dasharray': {
+                                type: 'select-box',
+                                options: options.strokeStyle,
+                                label: 'Outline style',
+                                group: 'presentation',
+                                when: {
+                                    and: [
+                                        { ne: { 'attrs/.uml-state-body/stroke': 'transparent' }},
+                                        { ne: { 'attrs/.uml-state-body/stroke-width': 0 }}
+                                    ]
+                                },
+                                index: 5
+                            }
+                        },
+                        '.uml-state-separator': {
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Horizontal rule outline',
+                                group: 'presentation',
+                                index: 3
+                            }
+                        },
+                        '.uml-state-events': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'events',
+                                when: { ne: { 'events': 0 }},
+                                index: 5
+                            }
+                        }
+                    }
+                },
+                groups: {
+                    presentation: {
+                        label: 'Presentation',
+                        index: 1
+                    },
+                    text: {
+                        label: 'State name text',
+                        index: 2
+                    },
+                    events: {
+                        label: 'State events text',
+                        index: 3
+                    }
+                }
+            },
+            'org.Member': {
+                inputs: {
+                    attrs: {
+                        '.rank': {
+                            text: {
+                                type: 'content-editable',
+                                label: 'Text',
+                                group: 'rank',
+                                index: 1
+                            },
+                            'font-size': {
+                                type: 'range',
+                                min: 5,
+                                max: 80,
+                                unit: 'px',
+                                label: 'Font size',
+                                group: 'rank',
+                                when: { ne: { 'attrs/.rank/text': '' }},
+                                index: 2
+                            },
+                            'font-family': {
+                                type: 'select-box',
+                                options: options.fontFamily,
+                                label: 'Font family',
+                                group: 'rank',
+                                when: { ne: { 'attrs/.rank/text': '' }},
+                                index: 3
+                            },
+                            'font-weight': {
+                                type: 'select-box',
+                                options: options.fontWeight,
+                                label: 'Font thickness',
+                                group: 'rank',
+                                when: { ne: { 'attrs/.rank/text': '' }},
+                                index: 4
+                            },
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'rank',
+                                when: { ne: { 'attrs/.rank/text': '' }},
+                                index: 5
+                            }
+                        },
+                        '.name': {
+                            text: {
+                                type: 'content-editable',
+                                label: 'Text',
+                                group: 'name',
+                                index: 1
+                            },
+                            'font-size': {
+                                type: 'range',
+                                min: 5,
+                                max: 80,
+                                unit: 'px',
+                                label: 'Font size',
+                                group: 'name',
+                                when: { ne: { 'attrs/.name/text': '' }},
+                                index: 2
+                            },
+                            'font-family': {
+                                type: 'select-box',
+                                options: options.fontFamily,
+                                label: 'Font family',
+                                group: 'name',
+                                when: { ne: { 'attrs/.name/text': '' }},
+                                index: 3
+                            },
+                            'font-weight': {
+                                type: 'select-box',
+                                options: options.fontWeight,
+                                label: 'Font thickness',
+                                group: 'name',
+                                when: { ne: { 'attrs/.name/text': '' }},
+                                index: 4
+                            },
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'name',
+                                when: { ne: { 'attrs/.name/text': '' }},
+                                index: 5
+                            }
+                        },
+                        '.card': {
+                            fill: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Fill',
+                                group: 'presentation',
+                                index: 1
+                            },
+                            stroke: {
+                                type: 'color-palette',
+                                options: options.colorPalette,
+                                label: 'Outline',
+                                group: 'presentation',
+                                index: 2
+                            },
+                            'stroke-width': {
+                                type: 'range',
+                                min: 0,
+                                max: 30,
+                                step: 1,
+                                defaultValue: 1,
+                                unit: 'px',
+                                label: 'Outline thickness',
+                                group: 'presentation',
+                                when: { ne: { 'attrs/.card/stroke': 'transparent' }},
+                                index: 3
+                            },
+                            'stroke-dasharray': {
+                                type: 'select-box',
+                                options: options.strokeStyle,
+                                label: 'Outline style',
+                                group: 'presentation',
+                                when: {
+                                    and: [
+                                        { ne: { 'attrs/.card/stroke': 'transparent' }},
+                                        { ne: { 'attrs/.card/stroke-width': 0 }}
+                                    ]
+                                },
+                                index: 4
+                            }
+                        },
+                        image: {
+                            'xlink:href': {
+                                type: 'select-button-group',
+                                options: options.imageGender,
+                                label: 'Gender',
+                                group: 'gender',
+                                index: 1
+                            }
+                        }
+                    }
+                },
+                groups: {
+                    presentation: {
+                        label: 'Presentation',
+                        index: 4
+                    },
+                    rank: {
+                        label: 'Rank',
+                        index: 2
+                    },
+                    name: {
+                        label: 'Name',
+                        index: 3
+                    },
+                    gender: {
+                        label: 'Gender',
+                        index: 1
+                    }
+                }
+            },
+            /*
             'standard.Image': {
                 inputs: {
                     attrs: {
@@ -2353,198 +3465,6 @@ class MyJointIndex{
                     text: {
                         label: 'Text',
                         index: 3
-                    }
-                }
-            },
-            'standard.HeaderedRectangle': {
-                inputs: {
-                    attrs: {
-                        bodyText: {
-                            textWrap: {
-                                text: {
-                                    type: 'content-editable',
-                                    label: 'Wrapped text',
-                                    group: 'text',
-                                    index: 1
-                                }
-                            },
-                            fontSize: {
-                                type: 'range',
-                                min: 5,
-                                max: 80,
-                                unit: 'px',
-                                label: 'Font size',
-                                group: 'text',
-                                when: { ne: { 'attrs/bodyText/text': '' }},
-                                index: 2
-                            },
-                            fontFamily: {
-                                type: 'select-box',
-                                options: options.fontFamily,
-                                label: 'Font family',
-                                group: 'text',
-                                when: { ne: { 'attrs/bodyText/text': '' }},
-                                index: 3
-                            },
-                            fontWeight: {
-                                type: 'select-box',
-                                options: options.fontWeight,
-                                label: 'Font thickness',
-                                group: 'text',
-                                when: { ne: { 'attrs/bodyText/text': '' }},
-                                index: 4
-                            },
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'text',
-                                when: { ne: { 'attrs/boduText/text': '' }},
-                                index: 5
-                            }
-                        },
-                        headerText: {
-                            text: {
-                                type: 'content-editable',
-                                label: 'Text',
-                                group: 'headerText',
-                                index: 1
-                            },
-                            fontSize: {
-                                type: 'range',
-                                min: 5,
-                                max: 80,
-                                unit: 'px',
-                                label: 'Font size',
-                                group: 'headerText',
-                                when: { ne: { 'attrs/headerText/text': '' }},
-                                index: 2
-                            },
-                            fontFamily: {
-                                type: 'select-box',
-                                options: options.fontFamily,
-                                label: 'Font family',
-                                group: 'headerText',
-                                when: { ne: { 'attrs/headerText/text': '' }},
-                                index: 3
-                            },
-                            fontWeight: {
-                                type: 'select-box',
-                                options: options.fontWeight,
-                                label: 'Font thickness',
-                                group: 'headerText',
-                                when: { ne: { 'attrs/headerText/text': '' }},
-                                index: 4
-                            },
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'headerText',
-                                when: { ne: { 'attrs/headerText/text': '' }},
-                                index: 5
-                            }
-                        },
-                        body: {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'presentation',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'presentation',
-                                index: 2
-                            },
-                            strokeWidth: {
-                                type: 'range',
-                                min: 0,
-                                max: 30,
-                                step: 1,
-                                defaultValue: 1,
-                                unit: 'px',
-                                label: 'Outline thickness',
-                                group: 'presentation',
-                                when: { ne: { 'attrs/body/stroke': 'transparent' }},
-                                index: 3
-                            },
-                            strokeDasharray: {
-                                type: 'select-box',
-                                options: options.strokeStyle,
-                                label: 'Outline style',
-                                group: 'presentation',
-                                when: {
-                                    and: [
-                                        { ne: { 'attrs/body/stroke': 'transparent' }},
-                                        { ne: { 'attrs/body/strokeWidth': 0 }}
-                                    ]
-                                },
-                                index: 4
-                            }
-                        },
-                        header: {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'header',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'header',
-                                index: 2
-                            },
-                            strokeWidth: {
-                                type: 'range',
-                                min: 0,
-                                max: 30,
-                                step: 1,
-                                defaultValue: 1,
-                                unit: 'px',
-                                label: 'Outline thickness',
-                                group: 'header',
-                                when: { ne: { 'attrs/header/stroke': 'transparent' }},
-                                index: 3
-                            },
-                            strokeDasharray: {
-                                type: 'select-box',
-                                options: options.strokeStyle,
-                                label: 'Outline style',
-                                group: 'header',
-                                when: {
-                                    and: [
-                                        { ne: { 'attrs/header/stroke': 'transparent' }},
-                                        { ne: { 'attrs/header/strokeWidth': 0 }}
-                                    ]
-                                },
-                                index: 4
-                            }
-                        }
-                    }
-                },
-                groups: {
-                    presentation: {
-                        label: 'Presentation',
-                        index: 1
-                    },
-                    text: {
-                        label: 'Text',
-                        index: 2
-                    },
-                    header: {
-                        label: 'Header',
-                        index: 3
-                    },
-                    headerText: {
-                        label: 'Header Text',
-                        index: 4
                     }
                 }
             },
@@ -3185,215 +4105,6 @@ class MyJointIndex{
                                     ]
                                 },
                                 index: 4
-                            }
-                        }
-                    }
-                },
-                groups: {
-                    presentation: {
-                        label: 'Presentation',
-                        index: 1
-                    },
-                    text: {
-                        label: 'Text',
-                        index: 2
-                    }
-                }
-            },
-            'pn.Place': {
-                inputs: {
-                    attrs: {
-                        '.label': {
-                            text: {
-                                type: 'content-editable',
-                                label: 'Text',
-                                group: 'text',
-                                index: 1
-                            },
-                            'font-size': {
-                                type: 'range',
-                                min: 5,
-                                max: 80,
-                                unit: 'px',
-                                label: 'Font size',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 2
-                            },
-                            'font-family': {
-                                type: 'select-box',
-                                options: options.fontFamily,
-                                label: 'Font family',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 3
-                            },
-                            'font-weight': {
-                                type: 'select-box',
-                                options: options.fontWeight,
-                                label: 'Font thickness',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 4
-                            },
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 5
-                            }
-                        },
-                        '.root': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'presentation',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'presentation',
-                                index: 2
-                            },
-                            'stroke-width': {
-                                type: 'range',
-                                min: 0,
-                                max: 30,
-                                step: 1,
-                                defaultValue: 1,
-                                unit: 'px',
-                                label: 'Outline thickness',
-                                group: 'presentation',
-                                when: { ne: { 'attrs/.root/stroke': 'transparent' }},
-                                index: 3
-                            },
-                            'stroke-dasharray': {
-                                type: 'select-box',
-                                options: options.strokeStyle,
-                                label: 'Outline style',
-                                group: 'presentation',
-                                when: {
-                                    and: [
-                                        { ne: { 'attrs/.root/stroke': 'transparent' }},
-                                        { ne: { 'attrs/.root/stroke-width': 0 }}
-                                    ]
-                                },
-                                index: 4
-                            }
-                        }
-                    },
-                    tokens: {
-                        type: 'number',
-                        min: 1,
-                        max: 500,
-                        group: 'data',
-                        index: 1
-                    }
-                },
-                groups: {
-                    presentation: {
-                        label: 'Presentation',
-                        index: 2
-                    },
-                    text: {
-                        label: 'Text',
-                        index: 3
-                    },
-                    data: {
-                        label: 'Data',
-                        index: 1
-                    }
-                }
-            },
-            'pn.Transition': {
-                inputs: {
-                    attrs: {
-                        '.label': {
-                            text: {
-                                type: 'content-editable',
-                                label: 'Text',
-                                group: 'text',
-                                index: 1
-                            },
-                            'font-size': {
-                                type: 'range',
-                                min: 5,
-                                max: 80,
-                                unit: 'px',
-                                label: 'Font size',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 2
-                            },
-                            'font-family': {
-                                type: 'select-box',
-                                options: options.fontFamily,
-                                label: 'Font family',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 3
-                            },
-                            'font-weight': {
-                                type: 'select-box',
-                                options: options.fontWeight,
-                                label: 'Font thickness',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 4
-                            },
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'text',
-                                when: { ne: { 'attrs/.label/text': '' }},
-                                index: 5
-                            }
-                        },
-                        rect: {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'presentation',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'presentation',
-                                index: 2
-                            },
-                            'stroke-width': {
-                                type: 'range',
-                                min: 0,
-                                max: 30,
-                                step: 1,
-                                defaultValue: 1,
-                                unit: 'px',
-                                label: 'Outline thickness',
-                                group: 'presentation',
-                                when: { ne: { 'attrs/rect/stroke': 'transparent' }},
-                                index: 2
-                            },
-                            'stroke-dasharray': {
-                                type: 'select-box',
-                                options: options.strokeStyle,
-                                label: 'Outline style',
-                                group: 'presentation',
-                                when: {
-                                    and: [
-                                        { ne: { 'attrs/rect/stroke': 'transparent' }},
-                                        { ne: { 'attrs/rect/stroke-width': 0 }}
-                                    ]
-                                },
-                                index: 3
                             }
                         }
                     }
@@ -4524,543 +5235,8 @@ class MyJointIndex{
                     }
                 }
             },
-            'uml.Class': {
-                inputs: {
-                    attrs: {
-                        '.uml-class-name-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'name',
-                                index: 4
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'name',
-                                index: 5
-                            }
-                        },
-                        '.uml-class-attrs-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'attributes',
-                                index: 4
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'attributes',
-                                index: 5
-                            }
-                        },
-                        '.uml-class-methods-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'methods',
-                                index: 4
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'methods',
-                                index: 5
-                            }
-                        }
-                    },
-                    name: {
-                        type: 'text',
-                        group: 'name',
-                        index: 1,
-                        label: 'Class name'
-                    },
-                    attributes: {
-                        type: 'list',
-                        item: {
-                            type: 'text'
-                        },
-                        group: 'attributes',
-                        index: 1,
-                        label: 'Attributes'
-                    },
-                    methods: {
-                        type: 'list',
-                        item: {
-                            type: 'text'
-                        },
-                        group: 'methods',
-                        index: 1,
-                        label: 'Methods'
-                    }
-                },
-                groups: {
-                    name: {
-                        label: 'Class name',
-                        index: 1
-                    },
-                    attributes: {
-                        label: 'Attributes',
-                        index: 2
-                    },
-                    methods: {
-                        label: 'Methods',
-                        index: 3
-                    }
-                }
-            },
-            'uml.Interface': {
-                inputs: {
-                    attrs: {
-                        '.uml-class-name-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'name',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'name',
-                                index: 2
-                            }
-                        },
-                        '.uml-class-attrs-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'attributes',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'attributes',
-                                index: 2
-                            }
-                        },
-                        '.uml-class-methods-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'methods',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'methods',
-                                index: 2
-                            }
-                        }
-                    },
-                    name: {
-                        type: 'text',
-                        group: 'name',
-                        index: 0,
-                        label: 'Interface name'
-                    },
-                    attributes: {
-                        type: 'list',
-                        item: {
-                            type: 'text'
-                        },
-                        group: 'attributes',
-                        index: 0,
-                        label: 'Attributes'
-                    },
-                    methods: {
-                        type: 'list',
-                        item: {
-                            type: 'text'
-                        },
-                        group: 'methods',
-                        index: 0,
-                        label: 'Methods'
-                    }
-                },
-                groups: {
-                    name: {
-                        label: 'Interface name',
-                        index: 1
-                    },
-                    attributes: {
-                        label: 'Attributes',
-                        index: 2
-                    },
-                    methods: {
-                        label: 'Methods',
-                        index: 3
-                    }
-                }
-            },
-            'uml.Abstract': {
-                inputs: {
-                    attrs: {
-                        '.uml-class-name-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'name',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'name',
-                                index: 2
-                            }
-                        },
-                        '.uml-class-attrs-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'attributes',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'attributes',
-                                index: 2
-                            }
-                        },
-                        '.uml-class-methods-rect': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'methods',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'methods',
-                                index: 2
-                            }
-                        }
-                    },
-                    name: {
-                        type: 'text',
-                        group: 'name',
-                        index: 0,
-                        label: 'Abstract class name'
-                    },
-                    attributes: {
-                        type: 'list',
-                        item: {
-                            type: 'text'
-                        },
-                        group: 'attributes',
-                        index: 0,
-                        label: 'Attributes'
-                    },
-                    methods: {
-                        type: 'list',
-                        item: {
-                            type: 'text'
-                        },
-                        group: 'methods',
-                        index: 0,
-                        label: 'Methods'
-                    }
-                },
-                groups: {
-                    name: {
-                        label: 'Abstract class name',
-                        index: 1
-                    },
-                    attributes: {
-                        label: 'Attributes Text',
-                        index: 2
-                    },
-                    methods: {
-                        label: 'Methods Text',
-                        index: 3
-                    }
-                }
-            },
-            'uml.State': {
-                inputs: {
-                    name: {
-                        group: 'text',
-                        index: 1,
-                        type: 'text'
-                    },
-                    events: {
-                        group: 'events',
-                        index: 1,
-                        type: 'list',
-                        item: {
-                            type: 'text'
-                        }
-                    },
-                    attrs: {
-                        '.uml-state-name': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'text',
-                                when: { ne: { 'name': '' }},
-                                index: 5
-                            }
-                        },
-                        '.uml-state-body': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'presentation',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'presentation',
-                                index: 2
-                            },
-                            'stroke-width': {
-                                type: 'range',
-                                min: 0,
-                                max: 30,
-                                step: 1,
-                                defaultValue: 1,
-                                unit: 'px',
-                                label: 'Outline thickness',
-                                group: 'presentation',
-                                when: { ne: { 'attrs/.uml-state-body/stroke': 'transparent' }},
-                                index: 4
-                            },
-                            'stroke-dasharray': {
-                                type: 'select-box',
-                                options: options.strokeStyle,
-                                label: 'Outline style',
-                                group: 'presentation',
-                                when: {
-                                    and: [
-                                        { ne: { 'attrs/.uml-state-body/stroke': 'transparent' }},
-                                        { ne: { 'attrs/.uml-state-body/stroke-width': 0 }}
-                                    ]
-                                },
-                                index: 5
-                            }
-                        },
-                        '.uml-state-separator': {
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Horizontal rule outline',
-                                group: 'presentation',
-                                index: 3
-                            }
-                        },
-                        '.uml-state-events': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'events',
-                                when: { ne: { 'events': 0 }},
-                                index: 5
-                            }
-                        }
-                    }
-                },
-                groups: {
-                    presentation: {
-                        label: 'Presentation',
-                        index: 1
-                    },
-                    text: {
-                        label: 'State name text',
-                        index: 2
-                    },
-                    events: {
-                        label: 'State events text',
-                        index: 3
-                    }
-                }
-            },
-            'org.Member': {
-                inputs: {
-                    attrs: {
-                        '.rank': {
-                            text: {
-                                type: 'content-editable',
-                                label: 'Text',
-                                group: 'rank',
-                                index: 1
-                            },
-                            'font-size': {
-                                type: 'range',
-                                min: 5,
-                                max: 80,
-                                unit: 'px',
-                                label: 'Font size',
-                                group: 'rank',
-                                when: { ne: { 'attrs/.rank/text': '' }},
-                                index: 2
-                            },
-                            'font-family': {
-                                type: 'select-box',
-                                options: options.fontFamily,
-                                label: 'Font family',
-                                group: 'rank',
-                                when: { ne: { 'attrs/.rank/text': '' }},
-                                index: 3
-                            },
-                            'font-weight': {
-                                type: 'select-box',
-                                options: options.fontWeight,
-                                label: 'Font thickness',
-                                group: 'rank',
-                                when: { ne: { 'attrs/.rank/text': '' }},
-                                index: 4
-                            },
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'rank',
-                                when: { ne: { 'attrs/.rank/text': '' }},
-                                index: 5
-                            }
-                        },
-                        '.name': {
-                            text: {
-                                type: 'content-editable',
-                                label: 'Text',
-                                group: 'name',
-                                index: 1
-                            },
-                            'font-size': {
-                                type: 'range',
-                                min: 5,
-                                max: 80,
-                                unit: 'px',
-                                label: 'Font size',
-                                group: 'name',
-                                when: { ne: { 'attrs/.name/text': '' }},
-                                index: 2
-                            },
-                            'font-family': {
-                                type: 'select-box',
-                                options: options.fontFamily,
-                                label: 'Font family',
-                                group: 'name',
-                                when: { ne: { 'attrs/.name/text': '' }},
-                                index: 3
-                            },
-                            'font-weight': {
-                                type: 'select-box',
-                                options: options.fontWeight,
-                                label: 'Font thickness',
-                                group: 'name',
-                                when: { ne: { 'attrs/.name/text': '' }},
-                                index: 4
-                            },
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'name',
-                                when: { ne: { 'attrs/.name/text': '' }},
-                                index: 5
-                            }
-                        },
-                        '.card': {
-                            fill: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Fill',
-                                group: 'presentation',
-                                index: 1
-                            },
-                            stroke: {
-                                type: 'color-palette',
-                                options: options.colorPalette,
-                                label: 'Outline',
-                                group: 'presentation',
-                                index: 2
-                            },
-                            'stroke-width': {
-                                type: 'range',
-                                min: 0,
-                                max: 30,
-                                step: 1,
-                                defaultValue: 1,
-                                unit: 'px',
-                                label: 'Outline thickness',
-                                group: 'presentation',
-                                when: { ne: { 'attrs/.card/stroke': 'transparent' }},
-                                index: 3
-                            },
-                            'stroke-dasharray': {
-                                type: 'select-box',
-                                options: options.strokeStyle,
-                                label: 'Outline style',
-                                group: 'presentation',
-                                when: {
-                                    and: [
-                                        { ne: { 'attrs/.card/stroke': 'transparent' }},
-                                        { ne: { 'attrs/.card/stroke-width': 0 }}
-                                    ]
-                                },
-                                index: 4
-                            }
-                        },
-                        image: {
-                            'xlink:href': {
-                                type: 'select-button-group',
-                                options: options.imageGender,
-                                label: 'Gender',
-                                group: 'gender',
-                                index: 1
-                            }
-                        }
-                    }
-                },
-                groups: {
-                    presentation: {
-                        label: 'Presentation',
-                        index: 4
-                    },
-                    rank: {
-                        label: 'Rank',
-                        index: 2
-                    },
-                    name: {
-                        label: 'Name',
-                        index: 3
-                    },
-                    gender: {
-                        label: 'Gender',
-                        index: 1
-                    }
-                }
-            }
+            */
+
 
         };
 

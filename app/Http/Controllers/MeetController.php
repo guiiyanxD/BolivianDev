@@ -38,7 +38,7 @@ class MeetController extends Controller
                 ]);
 
                 event(new UserMeetAccess($meet, Auth::user(), 1));
-                event(new PeopleSeeingMeeting($meet));
+                broadcast(new PeopleSeeingMeeting($meet));
                 return redirect()->route('board', ['invite_code' => $code->code,'meet_id'=> $meet->id]);
             }else{
                 return redirect()->route('home')->with(['message' => "Asegurese de completar todos los campos requeridos"]);

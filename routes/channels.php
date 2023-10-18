@@ -21,9 +21,11 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('meet.{id}', function ($meet) {
+Broadcast::channel('meet.{id}', function ($user, $meet) {
 //    return dd($meet);
     $session = UserMeet::where([['user_meet', $meet->id],['user_id', auth()->user()->id]]);
+//    $session = Meet::where('id','=', $meet->id);
+//    if(($session)->count() > 0){
     if($session){
         return json_encode(Auth::user());
     }
@@ -45,6 +47,6 @@ Broadcast::channel('movsFromMeet.{meet_id}', function($user, $meet_id){
 });
 
 
-Broadcast::channel('test', function ($user) {
+/*Broadcast::channel('test', function ($user) {
     return true;
-});
+});*/
