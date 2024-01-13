@@ -3,7 +3,7 @@ import {Actor} from "./actor.js"
 import {Link} from "./link.js"
 import {Occurrence} from "./occurrence.js";
 
-class Package{
+ export class Package{
     constructor(json){
         this.id = this._getUuid
         this.collaId = this._getUuid
@@ -267,6 +267,15 @@ class Package{
     /** ================================================ **/
 
     /** ================ Generacion del documento XML ================ **/
+
+    generateCompleteFile(){
+        let result = ' ';
+        result = result
+            + this.generateBaseDocuemnt()
+            + this.generateOpenXmiTag()
+            + this.generateCloseXmiTag();
+        return result;
+    }
     generateBaseDocuemnt(){
         let tag;
         tag =

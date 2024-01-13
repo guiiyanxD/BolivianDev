@@ -1,3 +1,6 @@
+// require('../toXML/package');
+const {Package} = require("../toXML/package.js");
+
 
 class MyJointIndex{
 
@@ -5379,6 +5382,20 @@ class MyJointIndex{
                         }
                     }
                 },
+                {
+                    type: 'button',
+                    name: 'xml',
+                    group: 'export',
+                    text: 'Export XML',
+                    attrs: {
+                        button: {
+                            id: 'btn-xml',
+                            'data-tooltip': 'Export to XMK file',
+                            'data-tooltip-position': 'top',
+                            'data-tooltip-position-selector': '.toolbar-container'
+                        }
+                    }
+                },
                 /*{
                     type: 'button',
                     name: 'print',
@@ -5568,6 +5585,20 @@ class MyJointIndex{
 
         document.getElementById('toolbar-container').append(toolbar.el);
         toolbar.render();
+    }
+
+    exportToXML(){
+
+        var json = JSON.stringify(this.graph);
+        var pck = new Package(json);
+        var doc = pck.generateCompleteFile();
+
+        const link = document.createElement("a");
+        link.href = 'data:application/xml+xmi,'/* + encodeURIComponent(pck)*/;
+        link.setAttribute("download", 'diagrama.xml');
+        document.body.appendChild(doc);
+        link.click();
+        document.body.removeChild(doc);
     }
     applyOnSelection(method) {
         this.graph.startBatch('selection');
