@@ -7,6 +7,7 @@
 <script src=" {{ asset('backbone/backbone.js')}} "></script>
 <script src=" {{ asset('Jointjs/dist/rappid.js')}} "></script>
 <script src=" {{ asset('js/myJoint/myJointIndex.js') }} "></script>
+{{--<script src="{{ asset('js/toXML/package.js') }}"></script>--}}
 @if(isset($json))
     <script>
         let json = JSON.parse( {!! json_encode($json) !!} );
@@ -15,7 +16,12 @@
 @endif
 
 <script>
+
+
+    // import {Package} from "../../../public/js/toXML/package";
+
     let myjoint = new MyJointIndex();
+    let pck = new Package();
     const meetID = {{$meet_id}};
 
 
@@ -69,6 +75,9 @@
         // console.log( 'cellView>'+ cellView+ 'se movio un elemento ');
     })
 
+    myjoint.toolbar.on('xml:pointerclick', function(value, event) {
+        exportXML();
+    });
 
 
     function getJson($jsonPar){
@@ -104,13 +113,17 @@
             reLoadGarphFromJson(e.meet.backup);
         })
         .error((error)=>{
-            console.log(error);
+            // console.log(error);
         });
 
     function reLoadGarphFromJson(data){
 
         // console.log("reloadFromJson" + data);
         myjoint.graph.fromJSON(JSON.parse( (data) ));
+    }
+    function exportXML(){
+        json = myjoint.graph.toJSON();
+        pck.generateCompleteFile();
     }
 
 </script>

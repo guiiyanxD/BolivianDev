@@ -4,7 +4,7 @@
     * */
     let onlineUsers = 0;
     var meetId = {{$meet_id}};
-    console.log(onlineUsers)
+    // console.log(onlineUsers)
 
 
     function update_online_counter() {
@@ -24,7 +24,7 @@
             update_online_counter()
     })*/
         .error((error)=>{
-        console.log(error)
+        // console.log(error)
     });
 /*    Echo.join('meet.' + meetId )
         .here((users) => {
